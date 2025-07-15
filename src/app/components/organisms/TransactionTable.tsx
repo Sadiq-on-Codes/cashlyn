@@ -53,7 +53,7 @@ const TransactionTable: React.FC<Props> = ({
           </tr>
         </thead>
         <tbody>
-          {items.map((tx, idx) => (
+          {items?.map((tx, idx) => (
             <tr
               key={tx.id}
               className={`transition-all duration-150 ${
