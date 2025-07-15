@@ -21,9 +21,9 @@ export default function RootLayout({
         </div>
         <div className="flex-1 flex flex-col ml-76">
           <div className="fixed left-76 top-0 right-0 z-20">
-            {/* <TopBar /> */}
+            <TopBar />
           </div>
-          {/* <main className="flex-1 mt-24">{children}</main> */}
+          <main className="flex-1 mt-24">{children}</main>
         </div>
       </body>
     </html>
