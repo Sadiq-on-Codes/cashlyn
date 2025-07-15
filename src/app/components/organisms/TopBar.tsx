@@ -5,12 +5,22 @@ import { ChevronDownIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outlin
 import { BellIcon } from "@heroicons/react/24/solid";
 import { usePathname } from 'next/navigation';
 
-const TopBar = () => {
-const pageHeading = usePathname().slice(1); 
+const TopBar: React.FC<{ onMenuClick?: () => void }> = ({ onMenuClick }) => {
+  const pageHeading = usePathname().slice(1);
   return (
     <header className="flex items-center justify-between py-8 px-6 bg-white">
-      {/* Title */}
-      <h1 className="text-2xl font-bold text-gray-800">{pageHeading.toUpperCase()}</h1>
+      <div className="flex items-center gap-3">
+        {/* Hamburger menu for mobile */}
+        <button
+          className="md:hidden p-2 rounded-full hover:bg-gray-100 mr-2"
+          onClick={onMenuClick}
+          aria-label="Open sidebar"
+        >
+          <svg className="w-7 h-7 text-gray-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+        </button>
+        {/* Title */}
+        <h1 className="text-2xl font-bold text-gray-800">{pageHeading.toUpperCase()}</h1>
+      </div>
       {/* Right section */}
       <div className="flex items-center gap-6">
         {/* App Switcher Button */}

@@ -41,15 +41,15 @@ const TransactionTable: React.FC<Props> = ({
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-sm text-left border-separate border-spacing-y-2">
+      <table className="w-full text-sm text-left border-separate border-spacing-y-2 min-w-[700px]">
         <thead>
           <tr className="text-xs uppercase tracking-wider text-gray-500 border-b border-blue-100 bg-white">
-            {showName && <th className="px-6 py-4 font-bold">NAME/BUSINESS</th>}
-            {showType && <th className="px-6 py-4 font-bold">TYPE</th>}
-            {showAmount && <th className="px-6 py-4 font-bold">AMOUNT</th>}
-            {showDate && <th className="px-6 py-4 font-bold">DATE</th>}
-            {showInvoiceId && <th className="px-6 py-4 font-bold">INVOICE ID</th>}
-            {showAction && <th className="px-6 py-4 font-bold">ACTION</th>}
+            {showName && <th className="px-3 md:px-6 py-2 md:py-4 font-bold">NAME/BUSINESS</th>}
+            {showType && <th className="px-3 md:px-6 py-2 md:py-4 font-bold">TYPE</th>}
+            {showAmount && <th className="px-3 md:px-6 py-2 md:py-4 font-bold">AMOUNT</th>}
+            {showDate && <th className="px-3 md:px-6 py-2 md:py-4 font-bold">DATE</th>}
+            {showInvoiceId && <th className="px-3 md:px-6 py-2 md:py-4 font-bold">INVOICE ID</th>}
+            {showAction && <th className="px-3 md:px-6 py-2 md:py-4 font-bold">ACTION</th>}
           </tr>
         </thead>
         <tbody>
@@ -61,21 +61,21 @@ const TransactionTable: React.FC<Props> = ({
               } hover:bg-lime-50 border-b border-blue-50 last:border-b-0`}
             >
               {showName && (
-                <td className="px-6 py-4 flex items-center gap-4 min-w-[220px]">
+                <td className="px-3 md:px-6 py-2 md:py-4 flex items-center gap-4 min-w-[180px] md:min-w-[220px]">
                   {tx.businessLogo && (
                     <div className="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg overflow-hidden">
                       <Image src={tx.businessLogo} alt={tx.business} width={36} height={36} className="rounded-lg" />
                     </div>
                   )}
-                  <div>
-                    <div className="font-semibold text-gray-900 text-base leading-tight">{tx.name}</div>
-                    <div className="text-xs text-gray-400 leading-tight">{tx.business}</div>
+                  <div className="min-w-0">
+                    <div className="font-semibold text-gray-900 text-base leading-tight truncate max-w-[120px] md:max-w-[160px]">{tx.name}</div>
+                    <div className="text-xs text-gray-400 leading-tight truncate max-w-[100px] md:max-w-[140px]">{tx.business}</div>
                   </div>
                 </td>
               )}
-              {showType && <td className="px-6 py-4 text-gray-500 min-w-[120px]">{tx.type}</td>}
+              {showType && <td className="px-3 md:px-6 py-2 md:py-4 text-gray-500 min-w-[90px] md:min-w-[120px] truncate">{tx.type}</td>}
               {showAmount && (
-                <td className="px-6 py-4 min-w-[120px]">
+                <td className="px-3 md:px-6 py-2 md:py-4 min-w-[90px] md:min-w-[120px]">
                   {tx.amount < 0 ? (
                     <span className="text-red-500 font-bold text-base"> ₵{Math.abs(tx.amount).toFixed(2)}</span>
                   ) : (
@@ -84,15 +84,15 @@ const TransactionTable: React.FC<Props> = ({
                 </td>
               )}
               {showDate && (
-                <td className="px-6 py-4 min-w-[160px]">
-                  <div className="font-medium text-gray-900 text-xs">{tx.date}</div>
-                  <div className="text-xs text-gray-400">at {tx.time}</div>
+                <td className="px-3 md:px-6 py-2 md:py-4 min-w-[120px] md:min-w-[160px]">
+                  <div className="font-medium text-gray-900 text-xs truncate">{tx.date}</div>
+                  <div className="text-xs text-gray-400 truncate">at {tx.time}</div>
                 </td>
               )}
-              {showInvoiceId && <td className="px-6 py-4 text-gray-500 min-w-[120px]">{tx.invoiceId}</td>}
+              {showInvoiceId && <td className="px-3 md:px-6 py-2 md:py-4 text-gray-500 min-w-[90px] md:min-w-[120px] truncate">{tx.invoiceId}</td>}
               {showAction && (
-                <td className="px-6 py-4">
-                  <button className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-7 rounded-lg text-xs shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-lime-300">
+                <td className="px-3 md:px-6 py-2 md:py-4">
+                  <button className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-5 md:px-7 rounded-lg text-xs shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-lime-300 w-full md:w-auto">
                     {tx.actionLabel || 'View'}
                   </button>
                 </td>

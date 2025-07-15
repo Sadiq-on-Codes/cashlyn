@@ -70,22 +70,22 @@ const Chart: React.FC<ChartProps> = ({ transactions, height = 300 }) => {
   }, [filteredTxs]);
 
   return (
-    <div style={{ width: '100%', height, background: '#fff', borderRadius: '12px', padding: '24px', boxSizing: 'border-box' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+    <div className="w-full bg-white rounded-xl p-2 md:p-6 overflow-x-auto" style={{ height }}>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2 md:gap-0">
         <div>
-          <div style={{ fontWeight: 600, fontSize: 18, marginBottom: 8 }}>Working Capital</div>
-          <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#22c55e', display: 'inline-block' }} /> Income
+          <div className="font-semibold text-lg md:text-xl mb-2">Working Capital</div>
+          <div className="flex gap-4 md:gap-6 items-center">
+            <span className="flex items-center gap-2 text-sm md:text-base">
+              <span className="w-2 h-2 rounded-full bg-lime-500 inline-block" /> Income
             </span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#eab308', display: 'inline-block' }} /> Expenses
+            <span className="flex items-center gap-2 text-sm md:text-base">
+              <span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" /> Expenses
             </span>
           </div>
         </div>
         <div>
           <select
-            style={{ border: '1px solid #e5e7eb', borderRadius: 6, padding: '4px 12px', fontSize: 14 }}
+            className="border border-gray-200 rounded px-3 py-1 text-sm md:text-base"
             value={filter}
             onChange={e => setFilter(e.target.value as 'last7' | 'last30')}
           >

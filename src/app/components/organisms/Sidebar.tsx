@@ -20,11 +20,33 @@ const bottomLinks = [
   { label: "Logout", href: "#", icon: ArrowLeftOnRectangleIcon },
 ];
 
-const Sidebar: React.FC = () => {
+const Sidebar: React.FC<{
+  open?: boolean;
+  onClose?: () => void;
+}> = ({ open = false, onClose }) => {
   const pathname = usePathname();
+  // Overlay for mobile
   return (
-    <aside className="flex flex-col justify-between w-76 bg-white px-6 font-sans border border-gray-100 h-screen overflow-hidden">
-      <div>
+    <>
+      {/* Overlay */}
+      <div
+        className={`fixed inset-0 bg-black bg-opacity-30 z-30 transition-opacity md:hidden ${open ? "block" : "hidden"}`}
+        onClick={onClose}
+        aria-hidden="true"
+      />
+      {/* Sidebar */}
+      <aside
+        className={`fixed left-0 top-0 h-full z-40 w-64 bg-white px-6 font-sans border border-gray-100 overflow-y-auto transition-transform duration-300 transform md:static md:translate-x-0 md:block ${open ? "translate-x-0" : "-translate-x-full"} md:w-76`}
+        style={{ minWidth: '16rem' }}
+      >
+        {/* Close button for mobile */}
+        <button
+          className="md:hidden absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100"
+          onClick={onClose}
+          aria-label="Close sidebar"
+        >
+          <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
         {/* Logo/Brand */}
         <div className="flex items-center justify-start gap-3 mx-2 mb-12 mt-8">
           <span>
@@ -66,25 +88,25 @@ const Sidebar: React.FC = () => {
             );
           })}
         </nav>
-      </div>
-      {/* Bottom Links */}
-      <div className="flex flex-col gap-2 mb-2">
-        {bottomLinks.map((link) => {
-          const Icon = link.icon;
-          return (
-            <a
-              key={link.label}
-              href={link.href}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-gray-400 hover:bg-gray-50 transition-colors group"
-              style={{ minHeight: 44 }}
-            >
-              <Icon className="w-6 h-6 text-gray-400 group-hover:text-brand-black" />
-              <span className="leading-none">{link.label}</span>
-            </a>
-          );
-        })}
-      </div>
-    </aside>
+        {/* Bottom Links */}
+        <div className="flex flex-col gap-2 mb-2 mt-8">
+          {bottomLinks.map((link) => {
+            const Icon = link.icon;
+            return (
+              <a
+                key={link.label}
+                href={link.href}
+                className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-gray-400 hover:bg-gray-50 transition-colors group"
+                style={{ minHeight: 44 }}
+              >
+                <Icon className="w-6 h-6 text-gray-400 group-hover:text-brand-black" />
+                <span className="leading-none">{link.label}</span>
+              </a>
+            );
+          })}
+        </div>
+      </aside>
+    </>
   );
 };
 

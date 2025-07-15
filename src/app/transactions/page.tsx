@@ -12,8 +12,10 @@ const Transactions = () => {
     }, []);
 
     return (
-        <div className='p-6'>
-            <TransactionTable showInvoiceId={true} showAction={true} transactions={transactions} />
+        <div className='p-4 md:p-6'>
+            <div className="overflow-x-auto bg-white rounded-xl">
+                <TransactionTable showInvoiceId={true} showAction={true} transactions={transactions} />
+            </div>
         </div>
     )
 }

@@ -99,21 +99,22 @@ const QuickActions: React.FC<QuickActionsProps> = ({ balance, setBalance, transa
 
   return (
     <div>
-      <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row gap-3 md:gap-4 w-full md:w-fit">
         <Button
           icon={<PaperAirplaneIcon className="w-5 h-5" />}
           color="primary"
           onClick={() => setIsModalOpen(true)}
+          className="w-full md:w-auto"
         >
           Send Money
         </Button>
-        <Button icon={<BanknotesIcon className="w-5 h-5" />} color="secondary" onClick={() => setIsRequestModalOpen(true)}>
+        <Button icon={<BanknotesIcon className="w-5 h-5" />} color="secondary" onClick={() => setIsRequestModalOpen(true)} className="w-full md:w-auto">
           Request Money
         </Button>
       </div>
       {/* Send Money Modal */}
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <form className="space-y-4" onSubmit={handleSendMoney}>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Send Money">
+        <form className="space-y-4 p-2 md:p-4" onSubmit={handleSendMoney}>
           <div className="rounded-lg">
             <Input
               label="Recipient Name"
@@ -155,21 +156,21 @@ const QuickActions: React.FC<QuickActionsProps> = ({ balance, setBalance, transa
         </form>
       </Modal>
       {/* Send Money Confirmation Modal */}
-      <Modal isOpen={isConfirmOpen} onClose={() => setIsConfirmOpen(false)}>
-        <div className="bg-white rounded-xl p-4 w-full max-w-md">
+      <Modal isOpen={isConfirmOpen} onClose={() => setIsConfirmOpen(false)} title="Send Money Confirmation">
+        <div className="bg-white rounded-xl p-2 md:p-4 w-full max-w-md">
           <div className="mb-4">
             <h3 className="font-semibold text-gray-800 text-base">Transfer Summary</h3>
           </div>
           <div className="mb-2">
-            <div className="font-semibold text-gray-700 text-sm mb-1">Reciepient Name and Number</div>
+            <div className="font-semibold text-gray-700 text-sm mb-1">Recipient Name and Number</div>
             <div className="text-gray-400 text-sm leading-tight">{recipientName}</div>
             <div className="text-gray-400 text-sm leading-tight">{recipientNumber}</div>
           </div>
           <div className="my-4 text-gray-800 text-sm font-medium">Amount – ₵{amount}</div>
           <hr className="my-4" />
           <Button
-            color="default"
-            className="w-full bg-green-100 hover:bg-green-200 text-green-700"
+            color="primary"
+            className="w-full bg-lime-300 hover:bg-lime-400 text-gray-900"
             onClick={handleConfirm}
           >
             Confirm
@@ -177,20 +178,20 @@ const QuickActions: React.FC<QuickActionsProps> = ({ balance, setBalance, transa
         </div>
       </Modal>
       {/* Request Money Modal */}
-      <Modal isOpen={isRequestModalOpen} onClose={() => setIsRequestModalOpen(false)}>
-        <form className="space-y-4" onSubmit={handleRequestMoney}>
+      <Modal isOpen={isRequestModalOpen} onClose={() => setIsRequestModalOpen(false)} title="Request Money">
+        <form className="space-y-4 p-2 md:p-4" onSubmit={handleRequestMoney}>
           <div className="rounded-lg">
             <Input
-              label="Recipient Name"
-              placeholder="Enter recipient name"
+              label="Requester Name"
+              placeholder="Enter requester name"
               value={requestRecipientName}
               onChange={e => setRequestRecipientName(e.target.value)}
               className="mb-2"
               required
             />
             <Input
-              label="Recipient Number"
-              placeholder="Enter recipient number"
+              label="Requester Number"
+              placeholder="Enter requester number"
               value={requestRecipientNumber}
               onChange={e => setRequestRecipientNumber(e.target.value)}
               className="mb-2"
@@ -220,20 +221,20 @@ const QuickActions: React.FC<QuickActionsProps> = ({ balance, setBalance, transa
         </form>
       </Modal>
       {/* Request Money Confirmation Modal */}
-      <Modal isOpen={isRequestConfirmOpen} onClose={() => setIsRequestConfirmOpen(false)}>
-        <div className="bg-white rounded-xl p-4 w-full max-w-md">
+      <Modal isOpen={isRequestConfirmOpen} onClose={() => setIsRequestConfirmOpen(false)} title="Request Money Confirmation">
+        <div className="bg-white rounded-xl p-2 md:p-4 w-full max-w-md">
           <div className="mb-4">
             <h3 className="font-semibold text-gray-800 text-base">Request Summary</h3>
           </div>
           <div className="mb-2">
-            <div className="font-semibold text-gray-700 text-sm mb-1">Reciepient Name and Number</div>
+            <div className="font-semibold text-gray-700 text-sm mb-1">Requester Name and Number</div>
             <div className="text-gray-400 text-sm leading-tight">{requestRecipientName}</div>
             <div className="text-gray-400 text-sm leading-tight">{requestRecipientNumber}</div>
           </div>
           <div className="my-4 text-gray-800 text-sm font-medium">Amount – ₵{requestAmount}</div>
           <hr className="my-4" />
           <Button
-            color="default"
+            color="secondary"
             className="w-full bg-blue-100 hover:bg-blue-200 text-blue-700"
             onClick={handleRequestConfirm}
           >
