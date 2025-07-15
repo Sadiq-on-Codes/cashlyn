@@ -1,6 +1,5 @@
 import TransactionTable from '../components/organisms/TransactionTable';
 
-
 const Transactions = () => {
     return (
         <div className='p-6'>

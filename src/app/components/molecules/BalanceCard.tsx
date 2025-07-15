@@ -8,7 +8,7 @@ type Props = {
 
 const BalanceCard: React.FC<Props> = ({ balance }) => {
   return (
-    <div className="flex items-center gap-3 bg-[#4E5257] py-8 pl-6 pr-12 shadow w-fit rounded-lg">
+    <div className="flex items-center gap-3 bg-[#4E5257] py-6 pl-4 pr-10 shadow w-fit rounded-lg">
       <div className="bg-gray-600 p-4 rounded-full">
         <WalletIcon className="w-6 h-6 text-lime-300" />
       </div>

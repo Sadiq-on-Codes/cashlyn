@@ -3,12 +3,14 @@ import React from "react";
 import Image from "next/image";
 import { ChevronDownIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { BellIcon } from "@heroicons/react/24/solid";
+import { usePathname } from 'next/navigation';
 
-const TopBar: React.FC = () => {
+const TopBar = () => {
+const pageHeading = usePathname().slice(1); 
   return (
-    <header className="flex items-center justify-between py-8 px-6 bg-gray-50">
+    <header className="flex items-center justify-between py-8 px-6 bg-white">
       {/* Title */}
-      <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
+      <h1 className="text-2xl font-bold text-gray-800">{pageHeading.toUpperCase()}</h1>
       {/* Right section */}
       <div className="flex items-center gap-6">
         {/* App Switcher Button */}
