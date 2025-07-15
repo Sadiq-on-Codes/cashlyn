@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import Image from 'next/image';
 
@@ -23,106 +24,8 @@ type Props = {
   showDate?: boolean;
   showInvoiceId?: boolean;
   showAction?: boolean;
+  transactions: Transaction[];
 };
-
-const transactions: Transaction[] = [
-  {
-    id: 1,
-    name: 'Iphone 13 Pro MAX',
-    business: 'Apple. Inc',
-    businessLogo: '/file.svg',
-    type: 'Mobile',
-    amount: 420.84,
-    date: '14 Apr 2022',
-    time: '8:00 PM',
-    invoiceId: 'MGL0124877',
-    actionLabel: 'View',
-  },
-  {
-    id: 2,
-    name: 'Netflix Subscription',
-    business: 'Netflix',
-    businessLogo: '/vercel.svg',
-    type: 'Entertainment',
-    amount: 100.0,
-    date: '05 Apr 2022',
-    time: '7:00 PM',
-    invoiceId: 'MGL0124585',
-    actionLabel: 'View',
-  },
-  {
-    id: 3,
-    name: 'Figma Subscription',
-    business: 'Figma',
-    businessLogo: '/next.svg',
-    type: 'Software',
-    amount: 244.2,
-    date: '02 Apr 2022',
-    time: '10:00 PM',
-    invoiceId: 'MGL0124124',
-    actionLabel: 'View',
-  },
-  {
-    id: 4,
-    name: 'Bitcoin Transaction',
-    business: 'Coinbase',
-    businessLogo: '/globe.svg',
-    type: 'Technology',
-    amount: -520.84,
-    date: '02 Apr 2022',
-    time: '6:00 AM',
-    invoiceId: 'MGL0128544',
-    actionLabel: 'View',
-  },
-  {
-    id: 5,
-    name: 'Sajib Rahman',
-    business: 'Appsumo',
-    businessLogo: '/window.svg',
-    type: 'Withdraw',
-    amount: 500.1,
-    date: '30 Mar 2022',
-    time: '9:00 PM',
-    invoiceId: 'MGL0122143',
-    actionLabel: 'View',
-  },
-  {
-    id: 6,
-    name: 'Instagram Ads',
-    business: 'Meta',
-    businessLogo: '/vercel.svg',
-    type: 'Entertainment',
-    amount: 100.0,
-    date: '20 Mar 2022',
-    time: '9:00 PM',
-    invoiceId: 'MGL0124877',
-    actionLabel: 'View',
-  },
-  {
-    id: 7,
-    name: 'UIHUT Subscription',
-    business: 'UIHUT',
-    businessLogo: '/file.svg',
-    type: 'Payment',
-    amount: -84.0,
-    date: '24 Mar 2022',
-    time: '8:00 PM',
-    invoiceId: 'MGL0124244',
-    actionLabel: 'View',
-  },
-  {
-    id: 8,
-    name: 'Citi Bank Ltd.',
-    business: 'City Bank',
-    businessLogo: '/globe.svg',
-    type: 'Withdraw',
-    amount: 400.11,
-    date: '10 Mar 2022',
-    time: '7:00 AM',
-    invoiceId: 'MGL0127749',
-    actionLabel: 'View',
-  },
-];
 
 const TransactionTable: React.FC<Props> = ({
   records = 8,
@@ -132,8 +35,9 @@ const TransactionTable: React.FC<Props> = ({
   showDate = true,
   showInvoiceId = true,
   showAction = true,
+  transactions,
 }) => {
-  const items = transactions.slice(0, records);
+  const items = transactions?.slice(0, records);
 
   return (
     <div className="overflow-x-auto">
@@ -173,9 +77,9 @@ const TransactionTable: React.FC<Props> = ({
               {showAmount && (
                 <td className="px-6 py-4 min-w-[120px]">
                   {tx.amount < 0 ? (
-                    <span className="text-red-500 font-bold text-base"> ${Math.abs(tx.amount).toFixed(2)}</span>
+                    <span className="text-red-500 font-bold text-base"> ₵{Math.abs(tx.amount).toFixed(2)}</span>
                   ) : (
-                    <span className="text-green-600 font-bold text-base">${tx.amount.toFixed(2)}</span>
+                    <span className="text-green-600 font-bold text-base">₵{tx.amount.toFixed(2)}</span>
                   )}
                 </td>
               )}

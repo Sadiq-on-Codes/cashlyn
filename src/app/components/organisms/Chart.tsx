@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   AreaChart,
   Area,
@@ -11,17 +11,64 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-const data = [
-  { name: 'Apr 14', income: 5000, expenses: 5200 },
-  { name: 'Apr 15', income: 7000, expenses: 6000 },
-  { name: 'Apr 16', income: 6500, expenses: 7500 },
-  { name: 'Apr 17', income: 5500, expenses: 8000 },
-  { name: 'Apr 18', income: 4000, expenses: 5000 },
-  { name: 'Apr 19', income: 4800, expenses: 4700 },
-  { name: 'Apr 20', income: 5300, expenses: 4900 },
-];
+// Helper to format date as 'Apr 14'
+function formatDate(dateStr: string) {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
 
-const Chart: React.FC<{ height?: number }> = ({ height = 300 }) => {
+interface ChartData {
+  name: string;
+  income: number;
+  expenses: number;
+}
+
+interface TransactionForChart {
+  date: string;
+  amount: number;
+}
+
+interface ChartProps {
+  transactions: TransactionForChart[];
+  height?: number;
+}
+
+const Chart: React.FC<ChartProps> = ({ transactions, height = 300 }) => {
+  const [filter, setFilter] = useState<'last7' | 'last30'>('last7');
+
+  // Filter transactions by date
+  const filteredTxs = useMemo(() => {
+    const now = new Date();
+    const days = filter === 'last7' ? 7 : 30;
+    return transactions.filter(tx => {
+      const txDate = new Date(tx.date);
+      const diff = (now.getTime() - txDate.getTime()) / (1000 * 60 * 60 * 24);
+      return diff <= days;
+    });
+  }, [transactions, filter]);
+
+  // Aggregate by date
+  const data = useMemo(() => {
+    const map = new Map<string, ChartData>();
+    filteredTxs.forEach((tx) => {
+      const key = formatDate(tx.date);
+      if (!map.has(key)) {
+        map.set(key, { name: key, income: 0, expenses: 0 });
+      }
+      if (tx.amount >= 0) {
+        map.get(key)!.income += tx.amount;
+      } else {
+        map.get(key)!.expenses += Math.abs(tx.amount);
+      }
+    });
+    // Sort by date (ascending)
+    return Array.from(map.values()).sort((a, b) => {
+      const da = new Date(a.name + ' 2022');
+      const db = new Date(b.name + ' 2022');
+      return da.getTime() - db.getTime();
+    });
+  }, [filteredTxs]);
+
   return (
     <div style={{ width: '100%', height, background: '#fff', borderRadius: '12px', padding: '24px', boxSizing: 'border-box' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
@@ -37,7 +84,11 @@ const Chart: React.FC<{ height?: number }> = ({ height = 300 }) => {
           </div>
         </div>
         <div>
-          <select style={{ border: '1px solid #e5e7eb', borderRadius: 6, padding: '4px 12px', fontSize: 14 }} defaultValue="last7">
+          <select
+            style={{ border: '1px solid #e5e7eb', borderRadius: 6, padding: '4px 12px', fontSize: 14 }}
+            value={filter}
+            onChange={e => setFilter(e.target.value as 'last7' | 'last30')}
+          >
             <option value="last7">Last 7 days</option>
             <option value="last30">Last 30 days</option>
           </select>
@@ -48,7 +99,7 @@ const Chart: React.FC<{ height?: number }> = ({ height = 300 }) => {
           <XAxis dataKey="name" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
           <YAxis tickFormatter={(value) => `${value / 1000}K`} tick={{ fontSize: 12 }} axisLine={false} tickLine={false} domain={[0, 10000]} />
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <Tooltip contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 2px 8px #0001', fontSize: 14 }} formatter={(value) => `$${value.toLocaleString()}`} />
+          <Tooltip contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 2px 8px #0001', fontSize: 14 }} formatter={(value) => `₵${value.toLocaleString()}`} />
           <Area
             type="monotone"
             dataKey="income"
