@@ -18,7 +18,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        className={`flex px-4 py-4 rounded-lg h-fit font-semibold transition focus:outline-none focus:ring-2 focus:ring-blue-400 ${colorClasses[color]} ${className}`}
+        className={`flex items-center px-5 py-2.5 rounded-lg text-sm font-medium transition focus:outline-none focus:ring-2 cursor-pointer focus:ring-blue-400 ${colorClasses[color]} ${className}`}
         {...props}
       >
         {icon && <span className="mr-2 flex items-center">{icon}</span>}

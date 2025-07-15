@@ -173,7 +173,7 @@ const TransactionTable: React.FC<Props> = ({
               {showAmount && (
                 <td className="px-6 py-4 min-w-[120px]">
                   {tx.amount < 0 ? (
-                    <span className="text-red-500 font-bold text-base">~ ${Math.abs(tx.amount).toFixed(2)}</span>
+                    <span className="text-red-500 font-bold text-base"> ${Math.abs(tx.amount).toFixed(2)}</span>
                   ) : (
                     <span className="text-green-600 font-bold text-base">${tx.amount.toFixed(2)}</span>
                   )}
@@ -188,7 +188,7 @@ const TransactionTable: React.FC<Props> = ({
               {showInvoiceId && <td className="px-6 py-4 text-gray-500 min-w-[120px]">{tx.invoiceId}</td>}
               {showAction && (
                 <td className="px-6 py-4">
-                  <button className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-7 rounded-full text-xs shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-lime-300">
+                  <button className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-7 rounded-lg text-xs shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-lime-300">
                     {tx.actionLabel || 'View'}
                   </button>
                 </td>

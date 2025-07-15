@@ -69,8 +69,8 @@ const config = {
         },
       },
       fontFamily: {
-        sans: ['Geist', 'Inter', 'ui-sans-serif', 'system-ui'],
-        mono: ['Geist Mono', 'ui-monospace', 'SFMono-Regular'],
+        sans: ['Inter', 'sans-serif'],
+        mono: ['Inter', 'monospace'],
       },
       borderRadius: {
         'sm': '0.125rem',
