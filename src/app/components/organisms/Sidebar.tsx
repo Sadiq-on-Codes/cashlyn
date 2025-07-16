@@ -34,7 +34,9 @@ const Sidebar: React.FC<{
         aria-hidden="true"
       />
       <aside
-        className={`flex flex-col fixed left-0 top-0 h-full z-40 w-64 bg-[var(--sidebar-bg)]  font-sans border border-[var(--sidebar-border)] transition-transform duration-300 transform md:translate-x-0 md:block md:w-72`}
+        className={`flex flex-col fixed left-0 top-0 h-full z-40 w-64 bg-[var(--sidebar-bg)] font-sans border border-[var(--sidebar-border)] transition-transform duration-300 transform ${
+          open ? 'translate-x-0' : '-translate-x-full'
+        } md:translate-x-0 md:w-72`}
         style={{ minWidth: '16rem' }}
         role="navigation"
         aria-label="Sidebar navigation"
