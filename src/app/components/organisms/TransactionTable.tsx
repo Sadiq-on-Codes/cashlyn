@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Input from '../atoms/Input';
 import Select from '../atoms/Select';
 import Skeleton from '../atoms/Skeleton';
+import Button from '../atoms/Button';
+import Modal from '../molecules/Modal';
 
 export type Transaction = {
   id: number;
@@ -56,6 +58,8 @@ const TransactionTable: React.FC<Props> = ({
   const [activeFilters, setActiveFilters] = useState<{ [key: string]: string }>({});
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(records);
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const txKeySet: Record<string, true> = {
     id: true,
@@ -200,7 +204,7 @@ const TransactionTable: React.FC<Props> = ({
                   )}
                   <div className="min-w-0">
                     <div className="font-semibold text-gray-900 text-base leading-tight truncate max-w-[120px] md:max-w-[160px]">{tx.name}</div>
-                    <div className="text-xs text-gray-400 leading-tight truncate max-w-[100px] md:max-w-[140px]">{tx.business}</div>
+                    {/* <div className="text-xs text-gray-400 leading-tight truncate max-w-[100px] md:max-w-[140px]">{tx.business}</div> */}
                   </div>
                 </td>
               )}
@@ -223,9 +227,16 @@ const TransactionTable: React.FC<Props> = ({
               {showInvoiceId && <td className="px-3 md:px-6 py-2 md:py-4 text-gray-500 min-w-[90px] md:min-w-[120px] truncate">{tx.invoiceId}</td>}
               {showAction && (
                 <td className="px-3 md:px-6 py-2 md:py-4">
-                  <button className="bg-lime-400 hover:bg-lime-500 text-white font-bold py-2 px-5 md:px-7 rounded-lg text-xs shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-lime-300 w-full md:w-auto">
+                  <Button
+                    color="primary"
+                    className="w-full md:w-auto"
+                    onClick={() => {
+                      setSelectedTransaction(tx);
+                      setIsModalOpen(true);
+                    }}
+                  >
                     {tx.actionLabel || 'View'}
-                  </button>
+                  </Button>
                 </td>
               )}
             </tr>
@@ -271,6 +282,28 @@ const TransactionTable: React.FC<Props> = ({
             </button>
           </div>
         </div>
+      )}
+      {isModalOpen && selectedTransaction && (
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Transaction Details">
+          <div className="flex flex-col gap-2">
+            {selectedTransaction.businessLogo && (
+              <div className="flex justify-center mb-2">
+                <Image src={selectedTransaction.businessLogo} alt={selectedTransaction.business} width={48} height={48} className="rounded-lg" />
+              </div>
+            )}
+            <div className="flex flex-col gap-1">
+              <div><span className="font-semibold">Name:</span> {selectedTransaction.name}</div>
+              <div><span className="font-semibold">Business:</span> {selectedTransaction.business}</div>
+              <div><span className="font-semibold">Type:</span> {selectedTransaction.type}</div>
+              <div><span className="font-semibold">Amount:</span> {selectedTransaction.amount < 0 ? `-₵${Math.abs(selectedTransaction.amount).toFixed(2)}` : `₵${selectedTransaction.amount.toFixed(2)}`}</div>
+              <div><span className="font-semibold">Date:</span> {selectedTransaction.date}</div>
+              <div><span className="font-semibold">Time:</span> {selectedTransaction.time}</div>
+              <div><span className="font-semibold">Invoice ID:</span> {selectedTransaction.invoiceId}</div>
+              {selectedTransaction.status && <div><span className="font-semibold">Status:</span> {selectedTransaction.status}</div>}
+            </div>
+            <Button color="secondary" className="mt-4" onClick={() => setIsModalOpen(false)}>Close</Button>
+          </div>
+        </Modal>
       )}
     </div>
   );

@@ -31,6 +31,15 @@ interface TransactionForChart {
 const Chart: React.FC = () => {
   const [data, setData] = useState<ChartData[]>([]);
 
+  // Detect if mobile
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   useEffect(() => {
     const stored: TransactionForChart[] = JSON.parse(localStorage.getItem('transactions') || '[]');
     const map = new Map<string, ChartData>();
@@ -59,7 +68,7 @@ const Chart: React.FC = () => {
   ) : 10000;
 
   return (
-    <div className="w-full bg-white rounded-xl p-2 md:p-6 h-72 md:h-96">
+    <div className={`w-full bg-white rounded-xl p-2 md:p-6 ${isMobile ? 'h-80' : 'h-72 md:h-96'} pb-8`}>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2 md:gap-0">
         <div>
           <div className="font-semibold text-lg md:text-xl mb-2">Working Capital</div>
@@ -80,25 +89,31 @@ const Chart: React.FC = () => {
         </div>
       </div>
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data} margin={{ top: 24, right: 32, left: 32, bottom: 48 }}>
-          <XAxis dataKey="name" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
-          <YAxis 
+        <AreaChart
+          data={data}
+          margin={isMobile
+            ? { top: 12, right: 8, left: 8, bottom: 56 }
+            : { top: 24, right: 32, left: 32, bottom: 48 }
+          }
+        >
+          <XAxis dataKey="name" tick={{ fontSize: isMobile ? 10 : 12 }} axisLine={false} tickLine={false} />
+          <YAxis
             tickFormatter={(value) => `${value / 1000}K`}
-            tick={{ fontSize: 12 }} 
-            axisLine={false} 
-            tickLine={false} 
-            domain={[0, Math.ceil(maxValue * 1.1)]} 
+            tick={{ fontSize: isMobile ? 10 : 12 }}
+            axisLine={false}
+            tickLine={false}
+            domain={[0, Math.ceil(maxValue * 1.1)]}
           />
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <Tooltip contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 2px 8px #0001', fontSize: 14 }} formatter={(value) => `₵${value.toLocaleString()}`} />
+          <Tooltip contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 2px 8px #0001', fontSize: isMobile ? 12 : 14 }} formatter={(value) => `₵${value.toLocaleString()}`} />
           <Area
             type="monotone"
             dataKey="income"
             stroke="#22c55e"
             strokeWidth={3}
             fill="none"
-            dot={{ r: 4, fill: '#22c55e', stroke: '#fff', strokeWidth: 2 }}
-            activeDot={{ r: 6, fill: '#22c55e', stroke: '#fff', strokeWidth: 2 }}
+            dot={{ r: isMobile ? 2 : 4, fill: '#22c55e', stroke: '#fff', strokeWidth: 2 }}
+            activeDot={{ r: isMobile ? 3 : 6, fill: '#22c55e', stroke: '#fff', strokeWidth: 2 }}
           />
           <Area
             type="monotone"
@@ -106,8 +121,8 @@ const Chart: React.FC = () => {
             stroke="#eab308"
             strokeWidth={3}
             fill="none"
-            dot={{ r: 4, fill: '#eab308', stroke: '#fff', strokeWidth: 2 }}
-            activeDot={{ r: 6, fill: '#eab308', stroke: '#fff', strokeWidth: 2 }}
+            dot={{ r: isMobile ? 2 : 4, fill: '#eab308', stroke: '#fff', strokeWidth: 2 }}
+            activeDot={{ r: isMobile ? 3 : 6, fill: '#eab308', stroke: '#fff', strokeWidth: 2 }}
           />
         </AreaChart>
       </ResponsiveContainer>

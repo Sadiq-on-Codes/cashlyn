@@ -17,7 +17,7 @@ const TopBar: React.FC<{ onMenuClick?: () => void }> = ({ onMenuClick }) => {
         >
           <svg className="w-7 h-7 text-gray-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
         </button>
-        <h1 className="text-2xl font-bold text-gray-800">{pageHeading.toUpperCase()}</h1>
+        <h1 className="hidden md:block text-2xl font-bold text-gray-800">{pageHeading.toUpperCase()}</h1>
       </div>
       <div className="flex items-center gap-6">
         <button className="relative p-2 rounded-full hover:bg-gray-100 transition-colors">
