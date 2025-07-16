@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import Image from "next/image";
 import { ChevronDownIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { BellIcon } from "@heroicons/react/24/solid";
 import { usePathname } from 'next/navigation';
@@ -28,14 +27,9 @@ const TopBar: React.FC<{ onMenuClick?: () => void }> = ({ onMenuClick }) => {
           <span className="absolute top-1 right-1 w-2 h-2 bg-lime-400 rounded-full border-2 border-white"></span>
         </button>
         <div className="flex items-center gap-2 bg-gray-100 rounded-full px-3 py-2 border border-gray-100">
-          <Image
-            src="https://randomuser.me/api/portraits/men/32.jpg"
-            alt="User avatar"
-            width={32}
-            height={32}
-            className="w-8 h-8 rounded-full object-cover"
-            priority
-          />
+          <div className="w-8 h-8 flex items-center justify-center rounded-full bg-lime-400 text-white font-bold text-lg">
+            A
+          </div>
           <span className="font-medium text-gray-700 text-sm">Abubakar Sadick</span>
           <ChevronDownIcon className="w-4 h-4 text-gray-400" />
         </div>
