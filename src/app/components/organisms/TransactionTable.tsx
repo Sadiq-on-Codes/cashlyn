@@ -26,11 +26,10 @@ type Props = {
   showDate?: boolean;
   showInvoiceId?: boolean;
   showAction?: boolean;
-  // New props for search, pagination, and filters
   showSearch?: boolean;
   showPagination?: boolean;
   showFilters?: boolean;
-  filters?: { [key: string]: string[] }; // e.g., { type: ['Credit', 'Debit'], status: ['Completed', 'Pending'] }
+  filters?: { [key: string]: string[] }; 
   pageSizeOptions?: number[];
   transactions: Transaction[];
 };
@@ -50,13 +49,11 @@ const TransactionTable: React.FC<Props> = ({
   filters = {},
   pageSizeOptions = [5, 8, 10, 20],
 }) => {
-  // State for search, filters, and pagination
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilters, setActiveFilters] = useState<{ [key: string]: string }>({});
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(records);
 
-  // Helper for type-safe filter keys
   const txKeySet: Record<string, true> = {
     id: true,
     name: true,
@@ -71,10 +68,8 @@ const TransactionTable: React.FC<Props> = ({
     status: true,
   };
 
-  // Filtering logic
   const filteredTransactions = useMemo(() => {
     let filtered = transactions;
-    // Apply search
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter((tx: Transaction) =>
@@ -84,7 +79,6 @@ const TransactionTable: React.FC<Props> = ({
         tx.invoiceId.toLowerCase().includes(term)
       );
     }
-    // Apply filters
     Object.entries(activeFilters).forEach(([key, value]) => {
       if (value && (key in txKeySet)) {
         filtered = filtered.filter((tx: Transaction) => tx[key as keyof Transaction]?.toString() === value);
@@ -93,14 +87,12 @@ const TransactionTable: React.FC<Props> = ({
     return filtered;
   }, [transactions, searchTerm, activeFilters]);
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredTransactions.length / pageSize);
   const paginatedTransactions = useMemo(() => {
     const start = (currentPage - 1) * pageSize;
     return filteredTransactions.slice(start, start + pageSize);
   }, [filteredTransactions, currentPage, pageSize]);
 
-  // Handlers
   const handleFilterChange = (key: string, value: string) => {
     setActiveFilters(prev => ({ ...prev, [key]: value }));
     setCurrentPage(1); // Reset to first page on filter change
@@ -119,7 +111,6 @@ const TransactionTable: React.FC<Props> = ({
 
   return (
     <div className="overflow-x-auto " >
-      {/* Search and Filters */}
       {(showSearch || showFilters) && (
         <div className="flex flex-wrap gap-4 items-center p-4">
           {showSearch && (
@@ -148,7 +139,6 @@ const TransactionTable: React.FC<Props> = ({
             ))}
         </div>
       )}
-      {/* Table */}
       <table className="w-full text-sm text-left border-separate border-spacing-y-2 min-w-[700px]">
         <thead>
           <tr className="text-xs uppercase tracking-wider text-gray-500 border-b border-blue-100 bg-white">
@@ -214,7 +204,6 @@ const TransactionTable: React.FC<Props> = ({
           )}
         </tbody>
       </table>
-      {/* Pagination Controls */}
       {showPagination && totalPages > 1 && (
         <div className="flex flex-wrap items-center justify-between mt-4 gap-4">
           <div className="flex items-center gap-2">
