@@ -11,7 +11,6 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-
 function formatDate(dateStr: string) {
   const date = new Date(dateStr);
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
@@ -68,64 +67,98 @@ const Chart: React.FC = () => {
   ) : 10000;
 
   return (
-    <div className={`w-full bg-[var(--card)] rounded-xl p-2 md:p-6 ${isMobile ? 'h-80' : 'h-72 md:h-96'} pb-8`}>
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2 md:gap-0">
-        <div>
-          <div className="font-semibold text-lg md:text-xl mb-2">Working Capital</div>
-          <div className="flex gap-4 md:gap-6 items-center">
-            <span className="flex items-center gap-2 text-sm md:text-base">
-              <span className="w-2 h-2 rounded-full bg-[var(--lime)] inline-block" /> Income
-            </span>
-            <span className="flex items-center gap-2 text-sm md:text-base">
-              <span className="w-2 h-2 rounded-full bg-[var(--accent)] inline-block" /> Expenses
-            </span>
+    <div className={`w-full bg-[var(--card)] rounded-xl p-4 md:p-6 ${isMobile ? 'h-80' : 'h-72 md:h-96'}`}>
+      <div className="flex items-center justify-between mb-6">
+        <div className="font-semibold text-lg md:text-xl text-gray-800">Working Capital</div>
+        <div className="flex gap-4 items-center">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <span className="w-2 h-2 rounded-full bg-green-500 inline-block" /> Income
+          </div>
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <span className="w-2 h-2 rounded-full bg-red-500 inline-block" /> Expenses
           </div>
         </div>
-        <div>
-          <select style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '4px 12px', fontSize: 14 }} defaultValue="last7" disabled>
-            <option value="last7">Last 7 days</option>
-            <option value="last30">Last 30 days</option>
-          </select>
-        </div>
       </div>
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart
-          data={data}
-          margin={isMobile
-            ? { top: 12, right: 8, left: 8, bottom: 56 }
-            : { top: 24, right: 32, left: 32, bottom: 48 }
-          }
-        >
-          <XAxis dataKey="name" tick={{ fontSize: isMobile ? 10 : 12 }} axisLine={false} tickLine={false} />
-          <YAxis
-            tickFormatter={(value) => `${value / 1000}K`}
-            tick={{ fontSize: isMobile ? 10 : 12 }}
-            axisLine={false}
-            tickLine={false}
-            domain={[0, Math.ceil(maxValue * 1.1)]}
-          />
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <Tooltip contentStyle={{ borderRadius: 8, border: 'none', boxShadow: '0 2px 8px #0001', fontSize: isMobile ? 12 : 14 }} formatter={(value) => `₵${value.toLocaleString()}`} />
-          <Area
-            type="monotone"
-            dataKey="income"
-            stroke={typeof window !== 'undefined' ? getComputedStyle(document.documentElement).getPropertyValue('--lime').trim() : '#d6ff3f'}
-            strokeWidth={3}
-            fill="none"
-            dot={{ r: isMobile ? 2 : 4, fill: typeof window !== 'undefined' ? getComputedStyle(document.documentElement).getPropertyValue('--lime').trim() : '#d6ff3f', stroke: '#fff', strokeWidth: 2 }}
-            activeDot={{ r: isMobile ? 3 : 6, fill: typeof window !== 'undefined' ? getComputedStyle(document.documentElement).getPropertyValue('--lime').trim() : '#d6ff3f', stroke: '#fff', strokeWidth: 2 }}
-          />
-          <Area
-            type="monotone"
-            dataKey="expenses"
-            stroke={typeof window !== 'undefined' ? getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() : '#eab308'}
-            strokeWidth={3}
-            fill="none"
-            dot={{ r: isMobile ? 2 : 4, fill: typeof window !== 'undefined' ? getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() : '#eab308', stroke: '#fff', strokeWidth: 2 }}
-            activeDot={{ r: isMobile ? 3 : 6, fill: typeof window !== 'undefined' ? getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() : '#eab308', stroke: '#fff', strokeWidth: 2 }}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+      
+      <div className="flex-1 h-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart
+            data={data}
+            margin={isMobile
+              ? { top: 12, right: 8, left: 8, bottom: 56 }
+              : { top: 24, right: 32, left: 32, bottom: 48 }
+            }
+          >
+            <XAxis 
+              dataKey="name" 
+              tick={{ fontSize: isMobile ? 10 : 12 }} 
+              axisLine={false} 
+              tickLine={false} 
+            />
+            <YAxis
+              tickFormatter={(value) => `${value / 1000}K`}
+              tick={{ fontSize: isMobile ? 10 : 12 }}
+              axisLine={false}
+              tickLine={false}
+              domain={[0, Math.ceil(maxValue * 1.1)]}
+            />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" strokeOpacity={0.5} />
+            <Tooltip 
+              contentStyle={{ 
+                borderRadius: 8, 
+                border: '1px solid var(--border)',
+                backgroundColor: 'var(--card)',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', 
+                fontSize: isMobile ? 12 : 14,
+                padding: '8px 12px'
+              }} 
+              formatter={(value) => `₵${value.toLocaleString()}`} 
+            />
+            <Area
+              type="monotone"
+              dataKey="income"
+              stroke="#10b981"
+              strokeWidth={2.5}
+              fill="none"
+              dot={{ 
+                r: isMobile ? 2 : 3, 
+                fill: '#10b981', 
+                stroke: 'var(--card)', 
+                strokeWidth: 1.5 
+              }}
+              activeDot={{ 
+                r: isMobile ? 3 : 4, 
+                fill: '#10b981', 
+                stroke: 'var(--card)', 
+                strokeWidth: 1.5 
+              }}
+            />
+            <Area
+              type="monotone"
+              dataKey="expenses"
+              stroke="#ef4444"
+              strokeWidth={2.5}
+              fill="none"
+              dot={{ 
+                r: isMobile ? 2 : 3, 
+                fill: '#ef4444', 
+                stroke: 'var(--card)', 
+                strokeWidth: 1.5 
+              }}
+              activeDot={{ 
+                r: isMobile ? 3 : 4, 
+                fill: '#ef4444', 
+                stroke: 'var(--card)', 
+                strokeWidth: 1.5 
+              }}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+      
+      <div className="flex justify-end mt-2">
+        <span className="text-sm text-gray-500">Last 7 days</span>
+      </div>
     </div>
   );
 };
