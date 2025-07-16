@@ -16,8 +16,8 @@ const navLinks = [
 ];
 
 const bottomLinks = [
-  { label: "Help", href: "#", icon: QuestionMarkCircleIcon },
-  { label: "Logout", href: "#", icon: ArrowLeftOnRectangleIcon },
+  { label: "Help", href: "/help", icon: QuestionMarkCircleIcon },
+  { label: "Logout", href: "/logout", icon: ArrowLeftOnRectangleIcon },
 ];
 
 const Sidebar: React.FC<{
@@ -25,21 +25,19 @@ const Sidebar: React.FC<{
   onClose?: () => void;
 }> = ({ open = false, onClose }) => {
   const pathname = usePathname();
-  // Overlay for mobile
   return (
     <>
-      {/* Overlay */}
       <div
-        className={`fixed inset-0 bg-black bg-opacity-30 z-30 transition-opacity md:hidden ${open ? "block" : "hidden"}`}
+        className={`fixed inset-0 bg-black opacity-25 z-30 transition-opacity md:hidden ${open ? "block" : "hidden"}`}
         onClick={onClose}
         aria-hidden="true"
       />
-      {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 h-full z-40 w-64 bg-white px-6 font-sans border border-gray-100 overflow-y-auto transition-transform duration-300 transform md:static md:translate-x-0 md:block ${open ? "translate-x-0" : "-translate-x-full"} md:w-76`}
+        className={`fixed left-0 top-0 h-full z-40 w-64 bg-white px-6 font-sans border border-gray-100 overflow-y-auto transition-transform duration-300 transform md:translate-x-0 md:block ${open ? "translate-x-0" : "-translate-x-full"} md:w-72`}
         style={{ minWidth: '16rem' }}
+        role="navigation"
+        aria-label="Sidebar navigation"
       >
-        {/* Close button for mobile */}
         <button
           className="md:hidden absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100"
           onClick={onClose}
@@ -47,7 +45,6 @@ const Sidebar: React.FC<{
         >
           <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
-        {/* Logo/Brand */}
         <div className="flex items-center justify-start gap-3 mx-2 mb-12 mt-8">
           <span>
             <div className="w-9 h-9 rounded-lg bg-brand-black flex items-center justify-center">
@@ -58,7 +55,6 @@ const Sidebar: React.FC<{
             Cashlyn
           </span>
         </div>
-        {/* Navigation */}
         <nav className="flex flex-col gap-2">
           {navLinks.map((link) => {
             const Icon = link.icon;
@@ -88,14 +84,13 @@ const Sidebar: React.FC<{
             );
           })}
         </nav>
-        {/* Bottom Links */}
         <div className="flex flex-col gap-2 mb-2 mt-8">
           {bottomLinks.map((link) => {
             const Icon = link.icon;
             return (
               <a
                 key={link.label}
-                href={link.href}
+                href={link.href} // TODO: Replace '#' with actual route or handler
                 className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-gray-400 hover:bg-gray-50 transition-colors group"
                 style={{ minHeight: 44 }}
               >

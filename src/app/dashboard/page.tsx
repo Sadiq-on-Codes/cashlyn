@@ -34,8 +34,8 @@ const Dashboard = () => {
   if (balance === null) return null; // or a loading spinner
 
   return (
-    <main className="flex flex-col gap-6 md:gap-8 p-4 md:p-6 bg-white min-h-screen">
-      <div className="flex flex-col md:flex-row items-stretch justify-between flex-wrap gap-4 md:gap-8">
+    <main className="flex flex-col gap-6 md:gap-8 py-4 md:py-8">
+      <div className="flex flex-col md:flex-row items-stretch justify-between flex-wrap gap-4 md:gap-8 mt-6">
         <BalanceCard balance={balance} />
         <QuickActions balance={balance} setBalance={setBalance} transactions={transactions} setTransactions={setTransactions} />
       </div>

@@ -1,6 +1,8 @@
 'use client'
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
+import Input from '../atoms/Input';
+import Select from '../atoms/Select';
 
 export type Transaction = {
   id: number;
@@ -24,6 +26,12 @@ type Props = {
   showDate?: boolean;
   showInvoiceId?: boolean;
   showAction?: boolean;
+  // New props for search, pagination, and filters
+  showSearch?: boolean;
+  showPagination?: boolean;
+  showFilters?: boolean;
+  filters?: { [key: string]: string[] }; // e.g., { type: ['Credit', 'Debit'], status: ['Completed', 'Pending'] }
+  pageSizeOptions?: number[];
   transactions: Transaction[];
 };
 
@@ -36,11 +44,111 @@ const TransactionTable: React.FC<Props> = ({
   showInvoiceId = true,
   showAction = true,
   transactions,
+  showSearch = false,
+  showPagination = false,
+  showFilters = false,
+  filters = {},
+  pageSizeOptions = [5, 8, 10, 20],
 }) => {
-  const items = transactions?.slice(0, records);
+  // State for search, filters, and pagination
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeFilters, setActiveFilters] = useState<{ [key: string]: string }>({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(records);
+
+  // Helper for type-safe filter keys
+  const txKeySet: Record<string, true> = {
+    id: true,
+    name: true,
+    business: true,
+    businessLogo: true,
+    type: true,
+    amount: true,
+    date: true,
+    time: true,
+    invoiceId: true,
+    actionLabel: true,
+    status: true,
+  };
+
+  // Filtering logic
+  const filteredTransactions = useMemo(() => {
+    let filtered = transactions;
+    // Apply search
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      filtered = filtered.filter((tx: Transaction) =>
+        tx.name.toLowerCase().includes(term) ||
+        tx.business.toLowerCase().includes(term) ||
+        tx.type.toLowerCase().includes(term) ||
+        tx.invoiceId.toLowerCase().includes(term)
+      );
+    }
+    // Apply filters
+    Object.entries(activeFilters).forEach(([key, value]) => {
+      if (value && (key in txKeySet)) {
+        filtered = filtered.filter((tx: Transaction) => tx[key as keyof Transaction]?.toString() === value);
+      }
+    });
+    return filtered;
+  }, [transactions, searchTerm, activeFilters]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredTransactions.length / pageSize);
+  const paginatedTransactions = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return filteredTransactions.slice(start, start + pageSize);
+  }, [filteredTransactions, currentPage, pageSize]);
+
+  // Handlers
+  const handleFilterChange = (key: string, value: string) => {
+    setActiveFilters(prev => ({ ...prev, [key]: value }));
+    setCurrentPage(1); // Reset to first page on filter change
+  };
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1); // Reset to first page on search
+  };
+  const handlePageSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setPageSize(Number(e.target.value));
+    setCurrentPage(1);
+  };
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto " >
+      {/* Search and Filters */}
+      {(showSearch || showFilters) && (
+        <div className="flex flex-wrap gap-4 items-center p-4">
+          {showSearch && (
+            <Input
+              type="text"
+              placeholder="Search transactions..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-300"
+              style={{ minWidth: 200 }}
+            />
+          )}
+          {showFilters &&
+            Object.entries(filters).map(([key, options]) => (
+              <Select
+                key={key}
+                value={activeFilters[key] || ''}
+                onChange={e => handleFilterChange(key, e.target.value)}
+                className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-300"
+              >
+                <option value="">All {key.charAt(0).toUpperCase() + key.slice(1)}</option>
+                {options.map(option => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </Select>
+            ))}
+        </div>
+      )}
+      {/* Table */}
       <table className="w-full text-sm text-left border-separate border-spacing-y-2 min-w-[700px]">
         <thead>
           <tr className="text-xs uppercase tracking-wider text-gray-500 border-b border-blue-100 bg-white">
@@ -53,7 +161,7 @@ const TransactionTable: React.FC<Props> = ({
           </tr>
         </thead>
         <tbody>
-          {items?.map((tx, idx) => (
+          {paginatedTransactions?.map((tx: Transaction, idx: number) => (
             <tr
               key={tx.id}
               className={`transition-all duration-150 ${
@@ -99,8 +207,49 @@ const TransactionTable: React.FC<Props> = ({
               )}
             </tr>
           ))}
+          {paginatedTransactions.length === 0 && (
+            <tr>
+              <td colSpan={6} className="text-center py-8 text-gray-400">No transactions found.</td>
+            </tr>
+          )}
         </tbody>
       </table>
+      {/* Pagination Controls */}
+      {showPagination && totalPages > 1 && (
+        <div className="flex flex-wrap items-center justify-between mt-4 gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-500">Rows per page:</span>
+            <Select
+              value={pageSize}
+              onChange={handlePageSizeChange}
+              className="border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-lime-300"
+            >
+              {pageSizeOptions.map(opt => (
+                <option key={opt} value={opt}>{opt}</option>
+              ))}
+            </Select>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-3 py-1 rounded-lg text-xs font-bold bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            >
+              Prev
+            </button>
+            <span className="text-xs text-gray-500">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 rounded-lg text-xs font-bold bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

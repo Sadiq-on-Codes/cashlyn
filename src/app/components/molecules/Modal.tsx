@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Button from "../atoms/Button";
 
 interface ModalProps {
@@ -9,19 +9,40 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const titleId = title ? "modal-title" : undefined;
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-2 md:px-0"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-2 md:px-0 animate-fadeIn"
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={titleId}
     >
       <div
-        className="bg-white rounded-xl p-2 md:p-6 w-full max-w-xs sm:max-w-sm md:max-w-md shadow-lg max-h-[90vh] overflow-y-auto"
+        ref={modalRef}
+        className="bg-white rounded-xl px-8 py-8 w-full max-w-sm shadow-none max-h-[90vh] overflow-y-auto outline-none flex flex-col gap-6"
         onClick={(e) => e.stopPropagation()}
+        tabIndex={-1}
       >
         {title && (
-          <div className="flex justify-between items-center mb-2 md:mb-4">
-            <h2 className="text-base md:text-lg font-semibold">{title}</h2>
+          <div className="flex justify-between items-center mb-0">
+            <h2 className="text-base md:text-lg font-semibold" id={titleId}>{title}</h2>
             <Button
               onClick={onClose}
               className="p-1 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 text-2xl font-bold bg-transparent shadow-none"
