@@ -102,11 +102,11 @@ const TransactionTable: React.FC<Props> = ({
 
   const handleFilterChange = (key: string, value: string) => {
     setActiveFilters(prev => ({ ...prev, [key]: value }));
-    setCurrentPage(1); // Reset to first page on filter change
+    setCurrentPage(1);
   };
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    setCurrentPage(1); // Reset to first page on search
+    setCurrentPage(1);
   };
   const handlePageSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPageSize(Number(e.target.value));
@@ -117,191 +117,224 @@ const TransactionTable: React.FC<Props> = ({
   };
 
   if (loading) {
-    // Render skeleton table
     return (
-      <div className="overflow-x-auto">
-        <div className="p-4">
-          {/* Table header skeleton */}
-          <div className="flex gap-4 mb-4">
-            <Skeleton width={120} height={20} />
-            <Skeleton width={80} height={20} />
-            <Skeleton width={100} height={20} />
-            <Skeleton width={120} height={20} />
-            <Skeleton width={100} height={20} />
-            <Skeleton width={80} height={20} />
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="p-6">
+          <div className="space-y-4">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <Skeleton width={40} height={40} className="rounded-lg" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton width={120} height={16} />
+                  <Skeleton width={80} height={12} />
+                </div>
+                <Skeleton width={60} height={16} />
+                <Skeleton width={80} height={16} />
+                <Skeleton width={100} height={16} />
+                <Skeleton width={60} height={32} className="rounded-lg" />
+              </div>
+            ))}
           </div>
-          {/* Table rows skeleton */}
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="flex gap-4 mb-2">
-              <Skeleton width={120} height={16} />
-              <Skeleton width={80} height={16} />
-              <Skeleton width={100} height={16} />
-              <Skeleton width={120} height={16} />
-              <Skeleton width={100} height={16} />
-              <Skeleton width={80} height={16} />
-            </div>
-          ))}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto " >
+    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
       {(showSearch || showFilters) && (
-        <div className="flex flex-wrap gap-4 items-center p-4">
-          {showSearch && (
-            <Input
-              type="text"
-              placeholder="Search transactions..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-              className="border border-[var(--border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
-              style={{ minWidth: 200 }}
-            />
-          )}
-          {showFilters &&
-            Object.entries(filters).map(([key, options]) => (
-              <Select
-                key={key}
-                value={activeFilters[key] || ''}
-                onChange={e => handleFilterChange(key, e.target.value)}
-                className="border border-[var(--border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
+        <div className="p-6 border-b border-gray-100">
+          <div className="flex flex-wrap gap-3 items-center">
+            {showSearch && (
+              <Input
+                type="text"
+                placeholder="Search transactions..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                style={{ minWidth: 240 }}
+              />
+            )}
+            {showFilters &&
+              Object.entries(filters).map(([key, options]) => (
+                <Select
+                  key={key}
+                  value={activeFilters[key] || ''}
+                  onChange={e => handleFilterChange(key, e.target.value)}
+                  className="border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">All {key.charAt(0).toUpperCase() + key.slice(1)}</option>
+                  {options.map(option => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </Select>
+              ))}
+          </div>
+        </div>
+      )}
+      
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-gray-100">
+              {showName && <th className="text-left py-4 px-6 text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>}
+              {showType && <th className="text-left py-4 px-6 text-xs font-semibold text-gray-600 uppercase tracking-wider">Type</th>}
+              {showAmount && <th className="text-left py-4 px-6 text-xs font-semibold text-gray-600 uppercase tracking-wider">Amount</th>}
+              {showDate && <th className="text-left py-4 px-6 text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</th>}
+              {showInvoiceId && <th className="text-left py-4 px-6 text-xs font-semibold text-gray-600 uppercase tracking-wider">Invoice</th>}
+              {showAction && <th className="text-left py-4 px-6 text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-50">
+            {paginatedTransactions?.map((tx: Transaction) => (
+              <tr
+                key={tx.id}
+                className="hover:bg-gray-50 transition-colors duration-150"
               >
-                <option value="">All {key.charAt(0).toUpperCase() + key.slice(1)}</option>
-                {options.map(option => (
-                  <option key={option} value={option}>{option}</option>
+                {showName && (
+                  <td className="py-4 px-6">
+                    <div className="flex items-center gap-3">
+                      {tx.businessLogo && (
+                        <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                          <Image src={tx.businessLogo} alt={tx.business} width={32} height={32} className="rounded-lg" />
+                        </div>
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <div className="font-medium text-gray-900 truncate">{tx.name}</div>
+                        <div className="text-sm text-gray-500 truncate">{tx.business}</div>
+                      </div>
+                    </div>
+                  </td>
+                )}
+                {showType && (
+                  <td className="py-4 px-6">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      {tx.type}
+                    </span>
+                  </td>
+                )}
+                {showAmount && (
+                  <td className="py-4 px-6">
+                    <span className={`font-semibold text-lg ${
+                      tx.amount < 0 ? 'text-red-600' : 'text-green-600'
+                    }`}>
+                      {tx.amount < 0 ? '-' : '+'}₵{Math.abs(tx.amount).toFixed(2)}
+                    </span>
+                  </td>
+                )}
+                {showDate && (
+                  <td className="py-4 px-6">
+                    <div className="text-sm text-gray-900">{tx.date}</div>
+                    <div className="text-xs text-gray-500">{tx.time}</div>
+                  </td>
+                )}
+                {showInvoiceId && (
+                  <td className="py-4 px-6">
+                    <span className="text-sm text-gray-600 font-mono">{tx.invoiceId}</span>
+                  </td>
+                )}
+                {showAction && (
+                  <td className="py-4 px-6">
+                    <Button
+                      color="primary"
+                      onClick={() => {
+                        setSelectedTransaction(tx);
+                        setIsModalOpen(true);
+                      }}
+                    >
+                      {tx.actionLabel || 'View'}
+                    </Button>
+                  </td>
+                )}
+              </tr>
+            ))}
+            {paginatedTransactions.length === 0 && (
+              <tr>
+                <td colSpan={6} className="py-12 text-center">
+                  <div className="text-gray-500 text-sm">No transactions found</div>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {showPagination && totalPages > 1 && (
+        <div className="px-6 py-4 border-t border-gray-100 bg-gray-50">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-gray-600">Rows per page:</span>
+              <Select
+                value={pageSize}
+                onChange={handlePageSizeChange}
+                className="border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                {pageSizeOptions.map(opt => (
+                  <option key={opt} value={opt}>{opt}</option>
                 ))}
               </Select>
-            ))}
-        </div>
-      )}
-      <table className="w-full text-sm text-left border-separate border-spacing-y-2 min-w-[700px]">
-        <thead>
-          <tr className="text-xs uppercase tracking-wider text-[var(--muted-foreground)] border-b border-[var(--border)] bg-[var(--card)]">
-            {showName && <th className="px-3 md:px-6 py-2 md:py-4 font-bold">NAME/BUSINESS</th>}
-            {showType && <th className="px-3 md:px-6 py-2 md:py-4 font-bold">TYPE</th>}
-            {showAmount && <th className="px-3 md:px-6 py-2 md:py-4 font-bold">AMOUNT</th>}
-            {showDate && <th className="px-3 md:px-6 py-2 md:py-4 font-bold">DATE</th>}
-            {showInvoiceId && <th className="px-3 md:px-6 py-2 md:py-4 font-bold">INVOICE ID</th>}
-            {showAction && <th className="px-3 md:px-6 py-2 md:py-4 font-bold">ACTION</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedTransactions?.map((tx: Transaction, idx: number) => (
-            <tr
-              key={tx.id}
-              className={`transition-all duration-150 ${
-                idx % 2 === 0 ? 'bg-[var(--muted)]' : 'bg-[var(--card)]'
-              } hover:bg-[var(--lime)] border-b border-[var(--border)] last:border-b-0`}
-            >
-              {showName && (
-                <td className="px-3 md:px-6 py-2 md:py-4 flex items-center gap-4 min-w-[180px] md:min-w-[220px]">
-                  {tx.businessLogo && (
-                    <div className="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-lg overflow-hidden">
-                      <Image src={tx.businessLogo} alt={tx.business} width={36} height={36} className="rounded-lg" />
-                    </div>
-                  )}
-                  <div className="min-w-0">
-                    <div className="font-semibold text-[var(--foreground)] text-base leading-tight truncate max-w-[120px] md:max-w-[160px]">{tx.name}</div>
-                    {/* <div className="text-xs text-gray-400 leading-tight truncate max-w-[100px] md:max-w-[140px]">{tx.business}</div> */}
-                  </div>
-                </td>
-              )}
-              {showType && <td className="px-3 md:px-6 py-2 md:py-4 text-[var(--muted-foreground)] min-w-[90px] md:min-w-[120px] truncate">{tx.type}</td>}
-              {showAmount && (
-                <td className="px-3 md:px-6 py-2 md:py-4 min-w-[90px] md:min-w-[120px]">
-                  {tx.amount < 0 ? (
-                    <span className="text-[var(--destructive)] font-bold text-base"> ₵{Math.abs(tx.amount).toFixed(2)}</span>
-                  ) : (
-                    <span className="text-[var(--lime)] font-bold text-base">₵{tx.amount.toFixed(2)}</span>
-                  )}
-                </td>
-              )}
-              {showDate && (
-                <td className="px-3 md:px-6 py-2 md:py-4 min-w-[120px] md:min-w-[160px]">
-                  <div className="font-medium text-gray-900 text-xs truncate">{tx.date}</div>
-                  <div className="text-xs text-gray-400 truncate">at {tx.time}</div>
-                </td>
-              )}
-              {showInvoiceId && <td className="px-3 md:px-6 py-2 md:py-4 text-gray-500 min-w-[90px] md:min-w-[120px] truncate">{tx.invoiceId}</td>}
-              {showAction && (
-                <td className="px-3 md:px-6 py-2 md:py-4">
-                  <Button
-                    color="primary"
-                    className="w-full md:w-auto"
-                    onClick={() => {
-                      setSelectedTransaction(tx);
-                      setIsModalOpen(true);
-                    }}
-                  >
-                    {tx.actionLabel || 'View'}
-                  </Button>
-                </td>
-              )}
-            </tr>
-          ))}
-          {paginatedTransactions.length === 0 && (
-            <tr>
-              <td colSpan={6} className="text-center py-8 text-gray-400">No transactions found.</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-      {showPagination && totalPages > 1 && (
-        <div className="flex flex-wrap items-center justify-between mt-4 gap-4">
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-500">Rows per page:</span>
-            <Select
-              value={pageSize}
-              onChange={handlePageSizeChange}
-              className="border border-[var(--border)] rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
-            >
-              {pageSizeOptions.map(opt => (
-                <option key={opt} value={opt}>{opt}</option>
-              ))}
-            </Select>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-3 py-1 rounded-lg text-xs font-bold bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-            >
-              Prev
-            </button>
-            <span className="text-xs text-gray-500">
-              Page {currentPage} of {totalPages}
-            </span>
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="px-3 py-1 rounded-lg text-xs font-bold bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-            >
-              Next
-            </button>
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="px-3 py-1.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Previous
+              </button>
+              <span className="text-sm text-gray-600">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       )}
+
       {isModalOpen && selectedTransaction && (
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Transaction Details">
-          <div className="flex flex-col gap-2">
+          <div className="space-y-4">
             {selectedTransaction.businessLogo && (
-              <div className="flex justify-center mb-2">
-                <Image src={selectedTransaction.businessLogo} alt={selectedTransaction.business} width={48} height={48} className="rounded-lg" />
+              <div className="flex justify-center">
+                <div className="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center overflow-hidden">
+                  <Image src={selectedTransaction.businessLogo} alt={selectedTransaction.business} width={48} height={48} className="rounded-lg" />
+                </div>
               </div>
             )}
-            <div className="flex flex-col gap-1">
-              <div><span className="font-semibold">Name:</span> {selectedTransaction.name}</div>
-              <div><span className="font-semibold">Business:</span> {selectedTransaction.business}</div>
-              <div><span className="font-semibold">Type:</span> {selectedTransaction.type}</div>
-              <div><span className="font-semibold">Amount:</span> {selectedTransaction.amount < 0 ? `-₵${Math.abs(selectedTransaction.amount).toFixed(2)}` : `₵${selectedTransaction.amount.toFixed(2)}`}</div>
-              <div><span className="font-semibold">Date:</span> {selectedTransaction.date}</div>
-              <div><span className="font-semibold">Time:</span> {selectedTransaction.time}</div>
-              <div><span className="font-semibold">Invoice ID:</span> {selectedTransaction.invoiceId}</div>
-              {selectedTransaction.status && <div><span className="font-semibold">Status:</span> {selectedTransaction.status}</div>}
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div><span className="font-medium text-gray-600">Name:</span> {selectedTransaction.name}</div>
+              <div><span className="font-medium text-gray-600">Business:</span> {selectedTransaction.business}</div>
+              <div><span className="font-medium text-gray-600">Type:</span> {selectedTransaction.type}</div>
+              <div><span className="font-medium text-gray-600">Amount:</span> 
+                <span className={`ml-1 font-semibold ${selectedTransaction.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                  {selectedTransaction.amount < 0 ? '-' : '+'}₵{Math.abs(selectedTransaction.amount).toFixed(2)}
+                </span>
+              </div>
+              <div><span className="font-medium text-gray-600">Date:</span> {selectedTransaction.date}</div>
+              <div><span className="font-medium text-gray-600">Time:</span> {selectedTransaction.time}</div>
+              <div className="col-span-2"><span className="font-medium text-gray-600">Invoice ID:</span> {selectedTransaction.invoiceId}</div>
+              {selectedTransaction.status && (
+                <div className="col-span-2">
+                  <span className="font-medium text-gray-600">Status:</span> 
+                  <span className={`ml-1 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                    selectedTransaction.status === 'Completed' ? 'bg-green-100 text-green-800' :
+                    selectedTransaction.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
+                    'bg-red-100 text-red-800'
+                  }`}>
+                    {selectedTransaction.status}
+                  </span>
+                </div>
+              )}
             </div>
-            <Button color="secondary" className="mt-4" onClick={() => setIsModalOpen(false)}>Close</Button>
+            <div className="flex justify-end pt-4">
+              <Button color="secondary" onClick={() => setIsModalOpen(false)}>Close</Button>
+            </div>
           </div>
         </Modal>
       )}

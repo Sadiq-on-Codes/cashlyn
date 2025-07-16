@@ -56,7 +56,7 @@ const Sidebar: React.FC<{
             Cashlyn
           </span>
         </div>
-        <div className="flex flex-col flex-1 justify-between">
+        <div className="flex flex-col px-4 flex-1 justify-between">
           <nav className="flex flex-col gap-2">
             {navLinks.map((link) => {
               const Icon = link.icon;

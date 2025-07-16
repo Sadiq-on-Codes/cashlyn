@@ -17,8 +17,8 @@ const Dashboard = () => {
     if (!isNaN(stored)) {
       setBalance(stored);
     } else {
-      localStorage.setItem("balance", "100000");
-      setBalance(100000);
+      localStorage.setItem("balance", "10000");
+      setBalance(10000);
     }
     const txs = JSON.parse(localStorage.getItem("transactions") || "[]");
     setTransactions(txs);
