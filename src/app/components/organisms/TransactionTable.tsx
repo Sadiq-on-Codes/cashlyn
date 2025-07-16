@@ -156,7 +156,7 @@ const TransactionTable: React.FC<Props> = ({
               placeholder="Search transactions..."
               value={searchTerm}
               onChange={handleSearchChange}
-              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-300"
+              className="border border-[var(--border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
               style={{ minWidth: 200 }}
             />
           )}
@@ -166,7 +166,7 @@ const TransactionTable: React.FC<Props> = ({
                 key={key}
                 value={activeFilters[key] || ''}
                 onChange={e => handleFilterChange(key, e.target.value)}
-                className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-300"
+                className="border border-[var(--border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
               >
                 <option value="">All {key.charAt(0).toUpperCase() + key.slice(1)}</option>
                 {options.map(option => (
@@ -178,7 +178,7 @@ const TransactionTable: React.FC<Props> = ({
       )}
       <table className="w-full text-sm text-left border-separate border-spacing-y-2 min-w-[700px]">
         <thead>
-          <tr className="text-xs uppercase tracking-wider text-gray-500 border-b border-blue-100 bg-white">
+          <tr className="text-xs uppercase tracking-wider text-[var(--muted-foreground)] border-b border-[var(--border)] bg-[var(--card)]">
             {showName && <th className="px-3 md:px-6 py-2 md:py-4 font-bold">NAME/BUSINESS</th>}
             {showType && <th className="px-3 md:px-6 py-2 md:py-4 font-bold">TYPE</th>}
             {showAmount && <th className="px-3 md:px-6 py-2 md:py-4 font-bold">AMOUNT</th>}
@@ -192,8 +192,8 @@ const TransactionTable: React.FC<Props> = ({
             <tr
               key={tx.id}
               className={`transition-all duration-150 ${
-                idx % 2 === 0 ? 'bg-gray-50' : 'bg-white'
-              } hover:bg-lime-50 border-b border-blue-50 last:border-b-0`}
+                idx % 2 === 0 ? 'bg-[var(--muted)]' : 'bg-[var(--card)]'
+              } hover:bg-[var(--lime)] border-b border-[var(--border)] last:border-b-0`}
             >
               {showName && (
                 <td className="px-3 md:px-6 py-2 md:py-4 flex items-center gap-4 min-w-[180px] md:min-w-[220px]">
@@ -203,18 +203,18 @@ const TransactionTable: React.FC<Props> = ({
                     </div>
                   )}
                   <div className="min-w-0">
-                    <div className="font-semibold text-gray-900 text-base leading-tight truncate max-w-[120px] md:max-w-[160px]">{tx.name}</div>
+                    <div className="font-semibold text-[var(--foreground)] text-base leading-tight truncate max-w-[120px] md:max-w-[160px]">{tx.name}</div>
                     {/* <div className="text-xs text-gray-400 leading-tight truncate max-w-[100px] md:max-w-[140px]">{tx.business}</div> */}
                   </div>
                 </td>
               )}
-              {showType && <td className="px-3 md:px-6 py-2 md:py-4 text-gray-500 min-w-[90px] md:min-w-[120px] truncate">{tx.type}</td>}
+              {showType && <td className="px-3 md:px-6 py-2 md:py-4 text-[var(--muted-foreground)] min-w-[90px] md:min-w-[120px] truncate">{tx.type}</td>}
               {showAmount && (
                 <td className="px-3 md:px-6 py-2 md:py-4 min-w-[90px] md:min-w-[120px]">
                   {tx.amount < 0 ? (
-                    <span className="text-red-500 font-bold text-base"> ₵{Math.abs(tx.amount).toFixed(2)}</span>
+                    <span className="text-[var(--destructive)] font-bold text-base"> ₵{Math.abs(tx.amount).toFixed(2)}</span>
                   ) : (
-                    <span className="text-green-600 font-bold text-base">₵{tx.amount.toFixed(2)}</span>
+                    <span className="text-[var(--lime)] font-bold text-base">₵{tx.amount.toFixed(2)}</span>
                   )}
                 </td>
               )}
@@ -255,7 +255,7 @@ const TransactionTable: React.FC<Props> = ({
             <Select
               value={pageSize}
               onChange={handlePageSizeChange}
-              className="border border-gray-300 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-lime-300"
+              className="border border-[var(--border)] rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
             >
               {pageSizeOptions.map(opt => (
                 <option key={opt} value={opt}>{opt}</option>

@@ -68,21 +68,21 @@ const Chart: React.FC = () => {
   ) : 10000;
 
   return (
-    <div className={`w-full bg-white rounded-xl p-2 md:p-6 ${isMobile ? 'h-80' : 'h-72 md:h-96'} pb-8`}>
+    <div className={`w-full bg-[var(--card)] rounded-xl p-2 md:p-6 ${isMobile ? 'h-80' : 'h-72 md:h-96'} pb-8`}>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2 md:gap-0">
         <div>
           <div className="font-semibold text-lg md:text-xl mb-2">Working Capital</div>
           <div className="flex gap-4 md:gap-6 items-center">
             <span className="flex items-center gap-2 text-sm md:text-base">
-              <span className="w-2 h-2 rounded-full bg-lime-500 inline-block" /> Income
+              <span className="w-2 h-2 rounded-full bg-[var(--lime)] inline-block" /> Income
             </span>
             <span className="flex items-center gap-2 text-sm md:text-base">
-              <span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" /> Expenses
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] inline-block" /> Expenses
             </span>
           </div>
         </div>
         <div>
-          <select style={{ border: '1px solid #e5e7eb', borderRadius: 6, padding: '4px 12px', fontSize: 14 }} defaultValue="last7" disabled>
+          <select style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '4px 12px', fontSize: 14 }} defaultValue="last7" disabled>
             <option value="last7">Last 7 days</option>
             <option value="last30">Last 30 days</option>
           </select>
@@ -109,20 +109,20 @@ const Chart: React.FC = () => {
           <Area
             type="monotone"
             dataKey="income"
-            stroke="#22c55e"
+            stroke={typeof window !== 'undefined' ? getComputedStyle(document.documentElement).getPropertyValue('--lime').trim() : '#d6ff3f'}
             strokeWidth={3}
             fill="none"
-            dot={{ r: isMobile ? 2 : 4, fill: '#22c55e', stroke: '#fff', strokeWidth: 2 }}
-            activeDot={{ r: isMobile ? 3 : 6, fill: '#22c55e', stroke: '#fff', strokeWidth: 2 }}
+            dot={{ r: isMobile ? 2 : 4, fill: typeof window !== 'undefined' ? getComputedStyle(document.documentElement).getPropertyValue('--lime').trim() : '#d6ff3f', stroke: '#fff', strokeWidth: 2 }}
+            activeDot={{ r: isMobile ? 3 : 6, fill: typeof window !== 'undefined' ? getComputedStyle(document.documentElement).getPropertyValue('--lime').trim() : '#d6ff3f', stroke: '#fff', strokeWidth: 2 }}
           />
           <Area
             type="monotone"
             dataKey="expenses"
-            stroke="#eab308"
+            stroke={typeof window !== 'undefined' ? getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() : '#eab308'}
             strokeWidth={3}
             fill="none"
-            dot={{ r: isMobile ? 2 : 4, fill: '#eab308', stroke: '#fff', strokeWidth: 2 }}
-            activeDot={{ r: isMobile ? 3 : 6, fill: '#eab308', stroke: '#fff', strokeWidth: 2 }}
+            dot={{ r: isMobile ? 2 : 4, fill: typeof window !== 'undefined' ? getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() : '#eab308', stroke: '#fff', strokeWidth: 2 }}
+            activeDot={{ r: isMobile ? 3 : 6, fill: typeof window !== 'undefined' ? getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() : '#eab308', stroke: '#fff', strokeWidth: 2 }}
           />
         </AreaChart>
       </ResponsiveContainer>

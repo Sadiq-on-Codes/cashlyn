@@ -21,7 +21,7 @@ const Skeleton: React.FC<SkeletonProps> = ({
   return (
     <div
       className={clsx(
-        'bg-gray-200 animate-pulse',
+        'bg-[var(--muted)] animate-pulse',
         circle ? 'rounded-full' : 'rounded',
         className
       )}

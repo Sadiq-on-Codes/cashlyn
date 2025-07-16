@@ -98,7 +98,10 @@ const QuickActions: React.FC<QuickActionsProps> = ({ balance, setBalance, transa
   };
 
   return (
-    <div>
+    <div className="border border-gray-200 rounded-lg p-4 md:p-4 bg-white">
+      <div className="mb-2 md:mb-4">
+        <h2 className="text-lg font-semibold">Quick Actions</h2>
+      </div>
       <div className="flex flex-col md:flex-row gap-3 md:gap-4 w-full md:w-fit">
         <Button
           icon={<PaperAirplaneIcon className="w-5 h-5" />}
@@ -152,20 +155,20 @@ const QuickActions: React.FC<QuickActionsProps> = ({ balance, setBalance, transa
       </Modal>
       {/* Send Money Confirmation Modal */}
       <Modal isOpen={isConfirmOpen} onClose={() => setIsConfirmOpen(false)} title="Send Money Confirmation">
-        <div className="bg-white rounded-xl w-full max-w-md">
+        <div className="bg-[var(--card)] rounded-xl w-full max-w-md">
           <div className="mb-4">
-            <h3 className="font-semibold text-gray-800 text-base">Transfer Summary</h3>
+            <h3 className="font-semibold text-[var(--foreground)] text-base">Transfer Summary</h3>
           </div>
           <div className="mb-2">
-            <div className="font-semibold text-gray-700 text-sm mb-1">Recipient Name and Number</div>
-            <div className="text-gray-400 text-sm leading-tight">{recipientName}</div>
-            <div className="text-gray-400 text-sm leading-tight">{recipientNumber}</div>
+            <div className="font-semibold text-[var(--muted-foreground)] text-sm mb-1">Recipient Name and Number</div>
+            <div className="text-[var(--muted-foreground)] text-sm leading-tight">{recipientName}</div>
+            <div className="text-[var(--muted-foreground)] text-sm leading-tight">{recipientNumber}</div>
           </div>
-          <div className="my-4 text-gray-800 text-sm font-medium">Amount – ₵{amount}</div>
+          <div className="my-4 text-[var(--foreground)] text-sm font-medium">Amount – ₵{amount}</div>
           <hr className="my-4" />
           <Button
             color="primary"
-            className="w-full bg-lime-300 hover:bg-lime-400 text-gray-900"
+            className="w-full bg-[var(--lime)] hover:bg-[var(--lime)] text-[var(--foreground)]"
             onClick={handleConfirm}
           >
             Confirm
@@ -213,20 +216,20 @@ const QuickActions: React.FC<QuickActionsProps> = ({ balance, setBalance, transa
       </Modal>
       {/* Request Money Confirmation Modal */}
       <Modal isOpen={isRequestConfirmOpen} onClose={() => setIsRequestConfirmOpen(false)} title="Request Money Confirmation">
-        <div className="bg-white rounded-xl p-2 md:p-4 w-full max-w-md">
+        <div className="bg-[var(--card)] rounded-xl p-2 md:p-4 w-full max-w-md">
           <div className="mb-4">
-            <h3 className="font-semibold text-gray-800 text-base">Request Summary</h3>
+            <h3 className="font-semibold text-[var(--foreground)] text-base">Request Summary</h3>
           </div>
           <div className="mb-2">
-            <div className="font-semibold text-gray-700 text-sm mb-1">Requester Name and Number</div>
-            <div className="text-gray-400 text-sm leading-tight">{requestRecipientName}</div>
-            <div className="text-gray-400 text-sm leading-tight">{requestRecipientNumber}</div>
+            <div className="font-semibold text-[var(--muted-foreground)] text-sm mb-1">Requester Name and Number</div>
+            <div className="text-[var(--muted-foreground)] text-sm leading-tight">{requestRecipientName}</div>
+            <div className="text-[var(--muted-foreground)] text-sm leading-tight">{requestRecipientNumber}</div>
           </div>
-          <div className="my-4 text-gray-800 text-sm font-medium">Amount – ₵{requestAmount}</div>
+          <div className="my-4 text-[var(--foreground)] text-sm font-medium">Amount – ₵{requestAmount}</div>
           <hr className="my-4" />
           <Button
             color="secondary"
-            className="w-full bg-blue-100 hover:bg-blue-200 text-blue-700"
+            className="w-full bg-[var(--accent)] hover:bg-[var(--accent)] text-[var(--foreground)]"
             onClick={handleRequestConfirm}
           >
             Confirm

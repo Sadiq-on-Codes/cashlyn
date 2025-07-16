@@ -3,8 +3,107 @@
 
 
 :root {
-  --background: #ffffff;
+  --background: #fafafa;
   --foreground: #171717;
+
+  --text-light: #f0e9e9;
+
+  --card: #ffffff;
+  --card-foreground: #171717;
+
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+
+  --primary: #d6ff3f;
+  --primary-foreground: #171717;
+  --primary-dark: #0d1220;
+  --primary-dark-foreground: #ffffff;
+
+  --secondary: #f5f5f5;
+  --secondary-foreground: #171717;
+
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+
+  --accent: #d6ff3f;
+  --accent-foreground: #171717;
+
+  --destructive: #ff3f4c;
+  --destructive-foreground: #fafafa;
+
+  --border: #e6e6e6;
+  --input: #ffffff;
+  --ring: #d6ff3f;
+
+  --lime: #d6ff3f;
+  --lime-foreground: #171717;
+
+  --dark-card: #0d1220;
+  --dark-card-foreground: #ffffff;
+
+  --sidebar-bg: #fafafa;
+  --sidebar-active: #d6ff3f;
+  --sidebar-text: #666666;
+  --sidebar-text-active: #171717;
+  --sidebar-background: #fafafa;
+  --sidebar-foreground: #393b42;
+  --sidebar-primary: #191a1c;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: #f3f3f6;
+  --sidebar-accent-foreground: #191a1c;
+  --sidebar-border: #e8ebf2;
+  --sidebar-ring: #3b82f6;
+}
+
+.dark {
+  --background: #171717;
+  --foreground: #ededed;
+
+  --card: #171717;
+  --card-foreground: #ededed;
+
+  --popover: #171717;
+  --popover-foreground: #ededed;
+
+  --primary: #d6ff3f;
+  --primary-foreground: #171717;
+  --primary-dark: #1a2233;
+  --primary-dark-foreground: #ffffff;
+
+  --secondary: #262626;
+  --secondary-foreground: #ededed;
+
+  --muted: #262626;
+  --muted-foreground: #a6a6a6;
+
+  --accent: #d6ff3f;
+  --accent-foreground: #171717;
+
+  --destructive: #cc3340;
+  --destructive-foreground: #fafafa;
+
+  --border: #262626;
+  --input: #262626;
+  --ring: #d6ff3f;
+
+  --lime: #d6ff3f;
+  --lime-foreground: #171717;
+
+  --dark-card: #1a2233;
+  --dark-card-foreground: #ffffff;
+
+  --sidebar-bg: #171717;
+  --sidebar-active: #d6ff3f;
+  --sidebar-text: #999999;
+  --sidebar-text-active: #ededed;
+  --sidebar-background: #171717;
+  --sidebar-foreground: #cccccc;
+  --sidebar-primary: #e5e6e8;
+  --sidebar-primary-foreground: #171717;
+  --sidebar-accent: #292a2b;
+  --sidebar-accent-foreground: #e5e6e8;
+  --sidebar-border: #404040;
+  --sidebar-ring: #3b82f6;
 }
 
 @theme inline {

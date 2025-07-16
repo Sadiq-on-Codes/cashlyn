@@ -28,7 +28,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
   if (!isOpen) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-2 md:px-0 animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--foreground)]/50 px-2 md:px-0 animate-fadeIn"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -36,7 +36,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
     >
       <div
         ref={modalRef}
-        className="bg-white rounded-xl px-8 py-8 w-full max-w-sm shadow-none max-h-[90vh] overflow-y-auto outline-none flex flex-col gap-6"
+        className="bg-[var(--card)] rounded-xl px-8 py-8 w-full max-w-sm shadow-none max-h-[90vh] overflow-y-auto outline-none flex flex-col gap-6"
         onClick={(e) => e.stopPropagation()}
         tabIndex={-1}
       >
@@ -45,7 +45,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
             <h2 className="text-base md:text-lg font-semibold" id={titleId}>{title}</h2>
             <Button
               onClick={onClose}
-              className="p-1 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 text-2xl font-bold bg-transparent shadow-none"
+              className="p-1 w-8 h-8 flex items-center justify-center text-[var(--muted-foreground)] hover:text-[var(--foreground)] text-2xl font-bold bg-transparent shadow-none"
               aria-label="Close"
             >
               ×

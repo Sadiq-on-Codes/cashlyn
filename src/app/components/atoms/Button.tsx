@@ -8,9 +8,9 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const colorClasses: Record<NonNullable<ButtonProps['color']>, string> = {
-  primary: 'bg-[#C8EE44] hover:bg-[#B6E03D] text-black',
-  secondary: 'bg-[#EEFEF2] hover:bg-[#D6F5E3] text-gray-800 border border-gray-200',
-  default: 'bg-white hover:bg-gray-50 text-gray-800 border border-gray-200',
+  primary: 'bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-[var(--primary-foreground)]',
+  secondary: 'bg-[var(--muted)] hover:bg-[var(--secondary)] text-[var(--foreground)] border border-[var(--border)]',
+  default: 'bg-[var(--card)] hover:bg-[var(--muted)] text-[var(--foreground)] border border-[var(--border)]',
 };
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

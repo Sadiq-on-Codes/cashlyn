@@ -12,7 +12,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <div className="fixed md:left-72 left-0 top-0 right-0 z-20">
           <TopBar onMenuClick={() => setSidebarOpen(true)} />
         </div>
-        <main className="flex-1 mt-24 px-4">{children}</main>
+        <main className="flex-1 mt-16 px-4">{children}</main>
       </div>
     </>
   );
