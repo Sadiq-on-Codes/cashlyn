@@ -3,6 +3,7 @@ import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Input from '../atoms/Input';
 import Select from '../atoms/Select';
+import Skeleton from '../atoms/Skeleton';
 
 export type Transaction = {
   id: number;
@@ -32,6 +33,7 @@ type Props = {
   filters?: { [key: string]: string[] }; 
   pageSizeOptions?: number[];
   transactions: Transaction[];
+  loading?: boolean;
 };
 
 const TransactionTable: React.FC<Props> = ({
@@ -48,6 +50,7 @@ const TransactionTable: React.FC<Props> = ({
   showFilters = false,
   filters = {},
   pageSizeOptions = [5, 8, 10, 20],
+  loading = false,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilters, setActiveFilters] = useState<{ [key: string]: string }>({});
@@ -108,6 +111,36 @@ const TransactionTable: React.FC<Props> = ({
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
+
+  if (loading) {
+    // Render skeleton table
+    return (
+      <div className="overflow-x-auto">
+        <div className="p-4">
+          {/* Table header skeleton */}
+          <div className="flex gap-4 mb-4">
+            <Skeleton width={120} height={20} />
+            <Skeleton width={80} height={20} />
+            <Skeleton width={100} height={20} />
+            <Skeleton width={120} height={20} />
+            <Skeleton width={100} height={20} />
+            <Skeleton width={80} height={20} />
+          </div>
+          {/* Table rows skeleton */}
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="flex gap-4 mb-2">
+              <Skeleton width={120} height={16} />
+              <Skeleton width={80} height={16} />
+              <Skeleton width={100} height={16} />
+              <Skeleton width={120} height={16} />
+              <Skeleton width={100} height={16} />
+              <Skeleton width={80} height={16} />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="overflow-x-auto " >
