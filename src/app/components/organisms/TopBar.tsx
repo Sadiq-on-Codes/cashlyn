@@ -7,7 +7,7 @@ import { BellIcon } from "@heroicons/react/24/solid";
 const TopBar: React.FC<{ onMenuClick?: () => void }> = ({ onMenuClick }) => {
   // const pageHeading = usePathname().slice(1);
   return (
-    <header className="flex items-center justify-between py-2 px-6 bg-[var(--card)]">
+    <header className="flex items-center justify-between py-2 px-6 bg-[var(--card)] border-b border-gray-200">
       <div className="flex items-center gap-3">
         <button
           className="md:hidden p-2 rounded-full hover:bg-[var(--muted)] mr-2"
@@ -27,7 +27,7 @@ const TopBar: React.FC<{ onMenuClick?: () => void }> = ({ onMenuClick }) => {
           <span className="absolute top-1 right-1 w-2 h-2 bg-[var(--lime)] rounded-full border-2 border-[var(--card)]"></span>
         </button>
         <div className="flex items-center gap-2 bg-[var(--muted)] rounded-full px-3 py-2 border border-[var(--muted)]">
-          <div className="w-8 h-8 flex items-center justify-center rounded-full bg-[var(--lime)] text-[var(--card)] font-bold text-lg">
+          <div className="w-8 h-8 flex items-center justify-center rounded-full bg-[var(--lime)] text-[var(--foreground)] font-bold text-lg">
             A
           </div>
           <span className="font-medium text-[var(--muted-foreground)] text-sm">Abubakar Sadick</span>
