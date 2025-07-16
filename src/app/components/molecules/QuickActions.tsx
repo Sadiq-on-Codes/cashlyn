@@ -7,6 +7,7 @@ import Select from '../atoms/Select';
 import Modal from '../molecules/Modal';
 import { PaperAirplaneIcon, BanknotesIcon } from "@heroicons/react/24/solid";
 import { Transaction } from '../organisms/TransactionTable';
+import { categoryOptions } from "../constants/categoryOptions";
 
 interface QuickActionsProps {
   balance: number | null;
@@ -142,14 +143,9 @@ const QuickActions: React.FC<QuickActionsProps> = ({ balance, setBalance, transa
             />
           </div>
           <Select label="Categories" value={category} onChange={e => setCategory(e.target.value)}>
-            <option>Grocery</option>
-            <option>Utilities</option>
-            <option>Transport</option>
-            <option>Shopping</option>
-            <option>Health</option>
-            <option>Education</option>
-            <option>Entertainment</option>
-            <option>Other</option>
+            {categoryOptions.map(option => (
+              <option key={option} value={option}>{option}</option>
+            ))}
           </Select>
           <Button type="submit" color="primary" className="w-full mt-7">Send Money</Button>
         </form>
@@ -207,14 +203,9 @@ const QuickActions: React.FC<QuickActionsProps> = ({ balance, setBalance, transa
             />
           </div>
           <Select label="Categories" value={requestCategory} onChange={e => setRequestCategory(e.target.value)}>
-            <option>Grocery</option>
-            <option>Utilities</option>
-            <option>Transport</option>
-            <option>Shopping</option>
-            <option>Health</option>
-            <option>Education</option>
-            <option>Entertainment</option>
-            <option>Other</option>
+            {categoryOptions.map(option => (
+              <option key={option} value={option}>{option}</option>
+            ))}
           </Select>
           <Button type="submit" color="primary" className="w-full mt-7">Request Money</Button>
 

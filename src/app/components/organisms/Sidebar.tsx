@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import {
   HomeIcon,
   CreditCardIcon,
@@ -60,7 +61,7 @@ const Sidebar: React.FC<{
             const Icon = link.icon;
             const active = pathname === link.href;
             return (
-              <a
+              <Link
                 key={link.label}
                 href={link.href}
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium transition-colors group
@@ -80,7 +81,7 @@ const Sidebar: React.FC<{
                   }`}
                 />
                 <span className="leading-none">{link.label}</span>
-              </a>
+              </Link>
             );
           })}
         </nav>
@@ -88,15 +89,15 @@ const Sidebar: React.FC<{
           {bottomLinks.map((link) => {
             const Icon = link.icon;
             return (
-              <a
+              <Link
                 key={link.label}
-                href={link.href} // TODO: Replace '#' with actual route or handler
+                href={link.href}
                 className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-gray-400 hover:bg-gray-50 transition-colors group"
                 style={{ minHeight: 44 }}
               >
                 <Icon className="w-6 h-6 text-gray-400 group-hover:text-brand-black" />
                 <span className="leading-none">{link.label}</span>
-              </a>
+              </Link>
             );
           })}
         </div>
