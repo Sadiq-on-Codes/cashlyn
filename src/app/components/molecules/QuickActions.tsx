@@ -155,20 +155,26 @@ const QuickActions: React.FC<QuickActionsProps> = ({ balance, setBalance, transa
       </Modal>
       {/* Send Money Confirmation Modal */}
       <Modal isOpen={isConfirmOpen} onClose={() => setIsConfirmOpen(false)} title="Send Money Confirmation">
-        <div className="bg-[var(--card)] rounded-xl w-full max-w-md">
+        <div className="w-full max-w-md  ">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100">
+              <PaperAirplaneIcon className="w-5 h-5 text-green-500 rotate-45" />
+            </span>
+            <h3 className="font-bold text-gray-900 text-lg">Transfer Summary</h3>
+          </div>
           <div className="mb-4">
-            <h3 className="font-semibold text-[var(--foreground)] text-base">Transfer Summary</h3>
+            <div className="font-semibold text-gray-500 text-xs mb-1">Recipient Name and Number</div>
+            <div className="text-gray-800 text-sm leading-tight font-medium">{recipientName}</div>
+            <div className="text-gray-500 text-sm leading-tight">{recipientNumber}</div>
           </div>
-          <div className="mb-2">
-            <div className="font-semibold text-[var(--muted-foreground)] text-sm mb-1">Recipient Name and Number</div>
-            <div className="text-[var(--muted-foreground)] text-sm leading-tight">{recipientName}</div>
-            <div className="text-[var(--muted-foreground)] text-sm leading-tight">{recipientNumber}</div>
+          <div className="flex items-center justify-between my-4">
+            <span className="text-gray-500 text-xs">Amount</span>
+            <span className="text-green-600 text-base font-bold tracking-wide">₵{amount}</span>
           </div>
-          <div className="my-4 text-[var(--foreground)] text-sm font-medium">Amount – ₵{amount}</div>
-          <hr className="my-4" />
+          <hr className="my-4 border-gray-200" />
           <Button
             color="primary"
-            className="w-full bg-[var(--lime)] hover:bg-[var(--lime)] text-[var(--foreground)]"
+            className="w-full bg-green-100 hover:bg-green-200 text-green-700 font-semibold py-2 rounded-lg transition-colors duration-150"
             onClick={handleConfirm}
           >
             Confirm
@@ -216,20 +222,26 @@ const QuickActions: React.FC<QuickActionsProps> = ({ balance, setBalance, transa
       </Modal>
       {/* Request Money Confirmation Modal */}
       <Modal isOpen={isRequestConfirmOpen} onClose={() => setIsRequestConfirmOpen(false)} title="Request Money Confirmation">
-        <div className="bg-[var(--card)] rounded-xl p-2 md:p-4 w-full max-w-md">
+        <div className=" w-full max-w-md">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100">
+              <BanknotesIcon className="w-5 h-5 text-blue-500" />
+            </span>
+            <h3 className="font-bold text-gray-900 text-lg">Request Summary</h3>
+          </div>
           <div className="mb-4">
-            <h3 className="font-semibold text-[var(--foreground)] text-base">Request Summary</h3>
+            <div className="font-semibold text-gray-500 text-xs mb-1">Requester Name and Number</div>
+            <div className="text-gray-800 text-sm leading-tight font-medium">{requestRecipientName}</div>
+            <div className="text-gray-500 text-sm leading-tight">{requestRecipientNumber}</div>
           </div>
-          <div className="mb-2">
-            <div className="font-semibold text-[var(--muted-foreground)] text-sm mb-1">Requester Name and Number</div>
-            <div className="text-[var(--muted-foreground)] text-sm leading-tight">{requestRecipientName}</div>
-            <div className="text-[var(--muted-foreground)] text-sm leading-tight">{requestRecipientNumber}</div>
+          <div className="flex items-center justify-between my-4">
+            <span className="text-gray-500 text-xs">Amount</span>
+            <span className="text-blue-600 text-base font-bold tracking-wide">₵{requestAmount}</span>
           </div>
-          <div className="my-4 text-[var(--foreground)] text-sm font-medium">Amount – ₵{requestAmount}</div>
-          <hr className="my-4" />
+          <hr className="my-4 border-gray-200" />
           <Button
             color="secondary"
-            className="w-full bg-[var(--accent)] hover:bg-[var(--accent)] text-[var(--foreground)]"
+            className="w-full bg-blue-100 hover:bg-blue-200 text-blue-700 font-semibold py-2 rounded-lg transition-colors duration-150"
             onClick={handleRequestConfirm}
           >
             Confirm

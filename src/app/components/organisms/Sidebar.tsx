@@ -48,7 +48,7 @@ const Sidebar: React.FC<{
         >
           <svg className="w-6 h-6 text-[var(--muted-foreground)]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
-        <div className="flex items-center justify-start gap-3 mx-2 mb-12 mt-2 border-b border-gray-200 py-3 px-6">
+        <div className="flex items-center justify-start gap-3 mx-2 mb-12 mt-2 border-b border-gray-200 pt-3 pb-2.5 px-6">
           <span>
             <div className="w-9 h-9 rounded-lg bg-[var(--sidebar-primary)] flex items-center justify-center">
               <span className="text-[var(--sidebar-primary-foreground)] text-2xl font-extrabold select-none">C</span>
@@ -58,8 +58,8 @@ const Sidebar: React.FC<{
             Cashlyn
           </span>
         </div>
-        <div className="flex flex-col px-4 flex-1 justify-between">
-          <nav className="flex flex-col gap-2">
+        <div className="flex flex-col  flex-1 justify-between">
+          <nav className="flex px-4 flex-col gap-2">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const active = pathname === link.href;
@@ -88,7 +88,7 @@ const Sidebar: React.FC<{
               );
             })}
           </nav>
-          <div className="flex flex-col gap-2 mb-4">
+          <div className="flex px-4 flex-col gap-2 mb-4 border-t border-gray-200">
             {bottomLinks.map((link) => {
               const Icon = link.icon;
               return (
